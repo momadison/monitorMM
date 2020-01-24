@@ -39,7 +39,7 @@ This file will be written to the working directory.
 
 '''
 
-from custom.functions import HelloWorld
+from customMOM.functions import HelloWorld
 fn = HelloWorld(
         name = 'AS_Tester',
         greeting_col = 'greeting')
