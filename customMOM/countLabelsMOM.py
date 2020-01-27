@@ -16,13 +16,11 @@ logger = logging.getLogger(__name__)
 
 PACKAGE_URL = 'git+https://github.com/momadison/monitorMM@starter_package'
 
-class logDataFramMOM(BaseTransformer):
+class countLabelsMOM(BaseTransformer):
 
-    def __init__(self, input_items, factor, output_items):
-
+    def __init__(self, input_items, output_items):
         self.input_items = input_items
         self.output_items = output_items
-        self.factor = float(factor)
         super().__init__()
     def execute(self, df):
         df = df.copy()
@@ -31,7 +29,8 @@ class logDataFramMOM(BaseTransformer):
         for i,input_item in enumerate(self.input_items):
             logger.info("input item")
             logger.info(df[input_item])
-            df[self.output_items[i]] = df[input_item] * self.factor
+            df[self.output_items[i]] = df[input_item].value_counts()
+            print("value counts df: ", df)
         return df
 
     @classmethod
