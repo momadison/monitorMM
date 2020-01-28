@@ -2,6 +2,8 @@ import inspect
 import logging
 import datetime as dt
 import math
+import string
+
 from sqlalchemy.sql.sqltypes import TIMESTAMP,VARCHAR
 import numpy as np
 import pandas as pd
@@ -16,21 +18,17 @@ logger = logging.getLogger(__name__)
 
 PACKAGE_URL = 'git+https://github.com/momadison/monitorMM@starter_package'
 
-class countLabelsMOM(BaseTransformer):
+class dropDuplicatesMOM(BaseTransformer):
 
     def __init__(self, input_items, output_items):
+
         self.input_items = input_items
         self.output_items = output_items
         super().__init__()
     def execute(self, df):
         df = df.copy()
-        logger.info('df frame:')
-        logger.info(df)
-        for i,input_item in enumerate(self.input_items):
-            logger.info("input item")
-            logger.info(df[input_item])
-            df[self.output_items[i]] = df[input_item].value_counts()
-            print("value counts df: ", df)
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = df[self.input_items].drop_duplicates()
         return df
 
     @classmethod
@@ -39,14 +37,10 @@ class countLabelsMOM(BaseTransformer):
         inputs = []
         inputs.append(ui.UIMultiItem(
                 name = 'input_items',
-                datatype=float,
+                datatype=str,
                 description = "Data items adjust",
                 output_item = 'output_items',
                 is_output_datatype_derived = True)
-                      )
-        inputs.append(ui.UISingle(
-                name = 'factor',
-                datatype=float)
                       )
         outputs = []
         return (inputs,outputs)

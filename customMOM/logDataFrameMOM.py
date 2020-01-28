@@ -19,7 +19,6 @@ PACKAGE_URL = 'git+https://github.com/momadison/monitorMM@starter_package'
 class logDataFramMOM(BaseTransformer):
 
     def __init__(self, input_items, factor, output_items):
-
         self.input_items = input_items
         self.output_items = output_items
         self.factor = float(factor)

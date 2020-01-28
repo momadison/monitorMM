@@ -65,14 +65,23 @@ print(df)
 '''
 
 from customMOM.countLabelsMOM import countLabelsMOM
-d = {'policyId': ['testpolicywaterleak','testpolicywaterleak','testpolicywaterleak','testpolicyoffline','testpolicyoffline','testpolicyoffline','testpolicynormal','testpolicynormal']}
-df = pd.DataFrame(data=d)
-print("db", db)
-fn = countLabelsMOM(
-    input_items=['policyId'],
-    output_items=['policyIDCounts']
-)
 
+d = {'id': ['4356','testpolicyoffline','testpolicynormal','4356'],
+                'evt_timestamp': ['2020-01-27 16:24:23.048414','2020-01-27 16:27:23.048414','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414'],
+                'travel_time': ['-1.734633', '0.76958', '0.710695','-1.734633'],
+                'speed': ['1.192602','.760958', '.090404','1.192602'],
+     }
+df = pd.DataFrame(data=d)
+
+fn = countLabelsMOM(
+    input_items=['speed'],
+    output_items=['myList']
+)
+print('this is a dataframe: ', df)
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
-df2 = fn.execute_local_test(df)
-print(df2)
+df = fn.execute(df)
+print(df)
+
+
+
+

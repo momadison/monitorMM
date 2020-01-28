@@ -13,6 +13,6 @@ with open('credentials_as.json', encoding='utf-8') as F:
 db_schema = None
 db = Database(credentials=credentials)
 
-from customMOM.logDataFrameMOM import logDataFramMOM
+from customMOM.countLabelsMOM import dropDuplicatesMOM
 
-db.register_functions([logDataFramMOM])
+db.register_functions([dropDuplicatesMOM])
