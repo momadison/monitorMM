@@ -25,10 +25,11 @@ class dropDuplicatesMOM(BaseTransformer):
         self.input_items = input_items
         self.output_items = output_items
         super().__init__()
+        print('this is the input items stuff: ', input_items)
     def execute(self, df):
         df = df.copy()
         for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i]] = df[self.input_items].drop_duplicates()
+            df[self.output_items[i]] = df['speed'].drop_duplicates()
         return df
 
     @classmethod
