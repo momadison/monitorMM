@@ -93,7 +93,8 @@ print(df)
 
 '''
 
-from customMOM.valueCounts import valueCountsMOM
+
+from customMOM.valueCountsValue import valueCountsValue
 
 d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': ['2020-01-27 16:24:23.048414','2020-01-27 16:27:23.048414','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604'],
@@ -110,10 +111,9 @@ d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','Testdevice
      }
 df = pd.DataFrame(data=d)
 
-fn = valueCountsMOM(
+fn = valueCountsValue(
      input_items=['policyId'],
-     output_items=['myList'],
-     dataSwitch = 1
+     output_items=['myList']
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
