@@ -62,7 +62,7 @@ fn = logDataFramMOM(
 df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
 print(df)
 
-'''
+
 
 from customMOM.countLabelsMOM import dropDuplicatesMOM
 
@@ -113,13 +113,13 @@ df = pd.DataFrame(data=d)
 fn = valueCountsMOM(
      input_items=['policyId'],
      output_items=['myList'],
-     dataSwitch = 1
+     data_switch = 1
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
 df = fn.execute(df)
 print(df)
-'''
+
 
 
 

@@ -20,10 +20,10 @@ PACKAGE_URL = 'git+https://github.com/momadison/monitorMM@starter_package'
 
 class valueCountsMOM(BaseTransformer):
 
-    def __init__(self, input_items, dataSwitch, output_items):
+    def __init__(self, input_items, data_switch, output_items):
         self.input_items = input_items
         self.output_items = output_items
-        self.dataSwitch = dataSwitch
+        self.data_switch = data_switch
         super().__init__()
     def execute(self, df):
         df = df.copy()
@@ -41,12 +41,16 @@ class valueCountsMOM(BaseTransformer):
         logger.info(df[df.columns[15:18]])
         logger.info('next 3 columns: ')
         logger.info(df[df.columns[18:21]])
+        logger.info('Switch')
+        logger.info(self.data_switch)
         inputItem = df[self.input_items]
         outputItem =  inputItem.iloc[0:,0].value_counts()
-        if (self.dataSwitch == 1):
+        if (self.data_switch == 1):
             df[self.output_items] = pd.DataFrame(outputItem.tolist())
-        if (self.dataSwitch == 0 or self.dataSwitch > 1):
+        if (self.data_switch == 0 or self.data_switch > 1):
             df[self.output_items] = pd.DataFrame(outputItem.index.tolist())
+        logger.info('output column: ')
+        logger.info(df[self.output_items])
         return df
 
     @classmethod
@@ -58,10 +62,10 @@ class valueCountsMOM(BaseTransformer):
                 datatype=str,
                 description = "Data items adjust",
                 output_item = 'output_items',
-                is_output_datatype_derived = True)
+                is_output_datatype_derived = False)
                       )
         inputs.append(ui.UISingle(
-                name = 'dataSwitch',
+                name = 'data_switch',
                 datatype= int,
                 description = "Enter 0 for values or 1 for counts"
         ))
