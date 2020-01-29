@@ -62,25 +62,28 @@ fn = logDataFramMOM(
 df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
 print(df)
 
+'''
+
 from customMOM.countLabelsMOM import dropDuplicatesMOM
 
+
 d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
-                'RCV_TIMESTAMP_UTC': ['2020-01-27 16:24:23.048414','2020-01-27 16:27:23.048414','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604'],
-                'alertEmail': ['mattomadison@gmail.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com'],
-                'alertPhoneNumber': ['9588473456','9847323748', '9048732312','9723450976','9847323748', '9048732312','9723450976'],
-                'appliance': ['washer','washer','washer','washer','washer','washer','washer','washer'],
-                'batteryLevel': [0,1,2,1,0,2,1,0],
-                'waterAlert': [True,False,True,False,True,True,False,True],
-                'policyId': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow','testpolicywaterleak','testpolicyoffline','testpolicynormal'],
-                'manufacturerDeviceId': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatterylow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
-                'descriptiveLocation': ['Bathroom', 'Bathroom', 'Kitchen', 'Bathroom', 'Basement', 'Kitchen', 'Bathroom', 'Basement'],
-                'country': ['United States','United States','United States','United States','United States','United States','United States','United States'],
-                'state': ['Texas','Texas','Texas','Texas','Texas','Texas','Texas','Texas'],
+     'RCV_TIMESTAMP_UTC': ['2020-01-27 16:24:23.048414','2020-01-27 16:27:23.048414','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604'],
+     'alertEmail': ['mattomadison@gmail.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com','mattomadison@me.com'],
+     'alertPhoneNumber': ['9588473456','9847323748', '9048732312','9723450976','9847323748', '9048732312','9723450976','9723450976'],
+     'appliance': ['washer','washer','washer','washer','washer','washer','washer','washer'],
+     'batteryLevel': [0,1,2,1,0,2,1,0],
+     'waterAlert': [True,False,True,False,True,True,False,True],
+     'policyId': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow','testpolicywaterleak','testpolicyoffline','testpolicynormal'],
+     'manufacturerDeviceId': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatterylow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
+     'descriptiveLocation': ['Bathroom', 'Bathroom', 'Kitchen', 'Bathroom', 'Basement', 'Kitchen', 'Bathroom', 'Basement'],
+     'country': ['United States','United States','United States','United States','United States','United States','United States','United States'],
+     'state': ['Texas','Texas','Texas','Texas','Texas','Texas','Texas','Texas'],
      }
 df = pd.DataFrame(data=d)
 
 fn = dropDuplicatesMOM(
-    input_items=['speed'],
+    input_items=['waterAlert'],
     output_items=['myList']
 )
 print('this is a dataframe: ', df)
@@ -116,7 +119,7 @@ fn = valueCountsMOM(
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
 df = fn.execute(df)
 print(df)
-
+'''
 
 
 
