@@ -113,7 +113,7 @@ df = pd.DataFrame(data=d)
 fn = valueCountsMOM(
      input_items=['policyId'],
      output_items=['myList'],
-     data_switch = 1
+     dataSwitch = 1
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
