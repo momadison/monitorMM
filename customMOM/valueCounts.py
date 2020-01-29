@@ -53,7 +53,7 @@ class valueCountsMOM(BaseTransformer):
     def build_ui(cls):
         #define arguments that behave as function inputs
         inputs = []
-        inputs.append(ui.UISingle(
+        inputs.append(ui.UIMultiItem(
                 name = 'input_items',
                 datatype=str,
                 description = "Data items adjust",
