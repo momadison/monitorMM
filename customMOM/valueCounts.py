@@ -50,7 +50,7 @@ class valueCountsMOM(BaseTransformer):
         if (self.dataSwitch == 0 or self.dataSwitch > 1):
             df[self.output_items] = pd.DataFrame(outputItem.index.tolist())
         logger.info('output column: ')
-        logger.info(df[self.output_items])
+        logger.info(df[self.output_items].iloc[0:10])
         return df
 
     @classmethod
