@@ -26,23 +26,13 @@ class valueCountsValue(BaseTransformer):
         super().__init__()
     def execute(self, df):
         df = df.copy()
-        logger.info('first 3 columns: ')
-        logger.info(df[df.columns[0:3]])
-        logger.info('next 3 columns: ')
-        logger.info(df[df.columns[3:6]])
-        logger.info('next 3 columns: ')
-        logger.info(df[df.columns[6:9]])
-        logger.info('next 3 columns: ')
-        logger.info(df[df.columns[9:12]])
-        logger.info('next 3 columns: ')
-        logger.info(df[df.columns[12:15]])
-        logger.info('next 3 columns: ')
-        logger.info(df[df.columns[15:18]])
-        logger.info('next 3 columns: ')
-        logger.info(df[df.columns[18:21]])
         for i, inputItem in enumerate(self.input_items):
-            outputItem =  df[self.input_items].iloc[0:,0].value_counts()
+            outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
             df[self.output_items[i]] = pd.DataFrame(outputItem.index.tolist())
+        logger.info("value counts dataframe: ")
+        logger.info(df)
+        logger.info("max value: ")
+        logger.info(outputItem.idxmax())
         return df
 
     @classmethod
@@ -54,7 +44,7 @@ class valueCountsValue(BaseTransformer):
                 datatype=str,
                 description = "Data items adjust",
                 output_item = 'output_items',
-                is_output_datatype_derived = False)
+                is_output_datatype_derived = True)
                       )
         outputs = []
         return (inputs,outputs)

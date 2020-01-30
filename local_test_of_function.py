@@ -83,7 +83,7 @@ d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','Testdevice
 df = pd.DataFrame(data=d)
 
 fn = dropDuplicatesMOM(
-    input_items=['waterAlert'],
+    input_items=['policyId'],
     output_items=['myList']
 )
 print('this is a dataframe: ', df)
@@ -119,6 +119,8 @@ fn = valueCountsValue(
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
 df = fn.execute(df)
 print(df)
+
+
 
 
 
