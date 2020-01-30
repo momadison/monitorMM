@@ -37,17 +37,6 @@ class valueCountsValue(BaseTransformer):
         logger.info(outputItem.index.tolist())
         logger.info('output items alone: ')
         logger.info(outputItem)
-        logger.info('TimeStamps')
-        logger.info(df['RCV_TIMESTAMP_UTC'])
-        logger.info('First Timestamp: ')
-        firstDate = df['RCV_TIMESTAMP_UTC'].iloc[0:1]
-        lastDate = df['RCV_TIMESTAMP_UTC'].iloc[-1]
-        difference = (lastDate - firstDate).dt.days
-        logger.info(firstDate)
-        logger.info('Last Timestamp')
-        logger.info(lastDate)
-        logger.info('Difference :')
-        logger.info(difference)
 
         return df
 
