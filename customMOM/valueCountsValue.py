@@ -33,6 +33,10 @@ class valueCountsValue(BaseTransformer):
         logger.info(df)
         logger.info("max value: ")
         logger.info(outputItem.idxmax())
+        logger.info('output item indexes: ')
+        logger.info(outputItem.index.tolist())
+        logger.info('output items alone: ')
+        logger.info(outputItem)
         return df
 
     @classmethod

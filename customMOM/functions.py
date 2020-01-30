@@ -62,3 +62,16 @@ class HelloWorld(BaseTransformer):
         outputs = [
             ui.UIFunctionOutSingle(name='greeting_col', datatype=str, description='Output item produced by function')]
         return (inputs, outputs)
+
+    class countTrue(BaseTransformer):
+
+        def __init__(self,input_item, output_item):
+            self.input_item = input_item
+            self.output_item = output_item
+            super().__init__()
+
+        def execute(self, df):
+            df = df.copy()
+            count = 0
+            for i, inputItem in enumerate(self.input_item):
+                if (inputItem == True):
