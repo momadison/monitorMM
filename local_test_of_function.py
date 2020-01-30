@@ -92,12 +92,10 @@ df = fn.execute(df)
 print(df)
 
 '''
-
-
-from customMOM.valueCountsValue import valueCountsValue
+from customMOM.functions import monthlyRate
 
 d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
-     'RCV_TIMESTAMP_UTC': ['2020-01-27 16:24:23.048414','2020-01-27 16:27:23.048414','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604','2020-01-27 16:25:23.048414','2020-01-27 16:25:23.048414', '2020-01-21 10:50:36.604'],
+     'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
      'alertEmail': ['mattomadison@gmail.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com','mattomadison@me.com'],
      'alertPhoneNumber': ['9588473456','9847323748', '9048732312','9723450976','9847323748', '9048732312','9723450976','9723450976'],
      'appliance': ['washer','washer','washer','washer','washer','washer','washer','washer'],
@@ -111,9 +109,9 @@ d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','Testdevice
      }
 df = pd.DataFrame(data=d)
 
-fn = valueCountsValue(
+fn = monthlyRate(
      input_items=['policyId'],
-     output_items=['myList']
+     output_items=['new_column']
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)

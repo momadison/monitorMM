@@ -2,7 +2,9 @@ import inspect
 import logging
 import datetime as dt
 import math
-from sqlalchemy.sql.sqltypes import TIMESTAMP, VARCHAR
+import string
+
+from sqlalchemy.sql.sqltypes import TIMESTAMP,VARCHAR
 import numpy as np
 import pandas as pd
 
@@ -16,11 +18,11 @@ logger = logging.getLogger(__name__)
 
 PACKAGE_URL = 'git+https://github.com/momadison/monitorMM@starter_package'
 
-
+'''
 class HelloWorld(BaseTransformer):
-    '''
-    The docstring of the function will show as the function description in the UI.
-    '''
+    
+    #The docstring of the function will show as the function description in the UI.
+   
 
     def __init__(self, name, greeting_col):
         # a function is expected to have at least one parameter that acts
@@ -62,8 +64,10 @@ class HelloWorld(BaseTransformer):
         outputs = [
             ui.UIFunctionOutSingle(name='greeting_col', datatype=str, description='Output item produced by function')]
         return (inputs, outputs)
+'''
 
-    class countTrue(BaseTransformer):
+
+class CountTrue(BaseTransformer):
 
         def __init__(self,input_item, output_item):
             self.input_item = input_item
@@ -75,3 +79,55 @@ class HelloWorld(BaseTransformer):
             count = 0
             for i, inputItem in enumerate(self.input_item):
                 if (inputItem == True):
+                    count = count + 1
+            df[self.output_item] = count
+            return df
+
+        @classmethod
+        def build_ui(cls):
+
+            inputs = [ui.UISingle(name='input_item', datatype=bool, description='series of booleans')]
+            outputs = [
+                ui.UIFunctionOutSingle(name='output_item', datatype=str,
+                                       description='Output item produced by function')]
+            return (inputs, outputs)
+
+
+class monthlyRate(BaseTransformer):
+    import numpy as np
+
+    def __init__(self, input_items, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        firstDate = df['RCV_TIMESTAMP_UTC'].iloc[0]
+        lastDate = df['RCV_TIMESTAMP_UTC'].iloc[-1]
+        difference = (lastDate - firstDate)
+        difference = difference / np.timedelta64(1, 'D')
+        logger.info('Total Time of reporting: ')
+        logger.info(difference)
+        rate = len(df[self.input_items])
+        logger.info('Deployment Monthly Rate: ')
+        logger.info(rate)
+        d = {'Rate':[rate]}
+        df[self.output_items] = pd.DataFrame(d)
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        outputs = []
+        return (inputs, outputs)
+
