@@ -88,7 +88,7 @@ class CountTrue(BaseTransformer):
 
             inputs = [ui.UISingle(name='input_item', datatype=bool, description='series of booleans')]
             outputs = [
-                ui.UIFunctionOutSingle(name='output_item', datatype=str,
+                ui.UIFunctionOutSingle(name='output_item', datatype=int,
                                        description='Output item produced by function')]
             return (inputs, outputs)
 
@@ -372,3 +372,38 @@ class firstRowCount(BaseTransformer):
         )
         outputs = []
         return (inputs, outputs)
+
+class valueCountsValue(BaseTransformer):
+
+    def __init__(self, input_items,  output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        super().__init__()
+    def execute(self, df):
+        df = df.copy()
+        print()
+        for i, inputItem in enumerate(self.input_items):
+            outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
+            outputItem = outputItem.index.tolist()
+            print('this is my list: ', outputItem)
+            df[self.output_items[i]] = pd.Series(outputItem)
+        logger.info("value counts dataframe: ")
+        logger.info(df)
+        logger.info('series added to dataframe: ')
+        logger.info(pd.Series(outputItem))
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        #define arguments that behave as function inputs
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+                name = 'input_items',
+                datatype=str,
+                description = "Data items adjust",
+                output_item = 'output_items',
+                is_output_datatype_derived = True)
+                      )
+        outputs = []
+        return (inputs,outputs)
