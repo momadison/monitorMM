@@ -142,6 +142,8 @@ class highestIndexOccurence(BaseTransformer):
     def execute(self, df):
         df = df.copy()
         outputItem = df[self.input_items].iloc[0:,0].value_counts().idxmax()
+        logger.info('the winner is: ', )
+        logger.info(outputItem)
         d = {'winner':[outputItem]}
         df[self.output_items] = pd.DataFrame(d)
 
@@ -214,6 +216,8 @@ class conditionCountBool(BaseTransformer):
                 count = count + 1
         logger.info('My total count of True is: ')
         logger.info(count)
+        logger.info('Log waterAlert Series: ')
+        logger.info(df['waterAlert'])
         d = {'count':[count]}
         df[self.output_items] = pd.DataFrame(d)
 
@@ -298,9 +302,7 @@ class lastOccurenceRelation(BaseTransformer):
         count = 0
         row = []
         input = df[self.input_items[0]]
-        print('frontwards input: ', input)
         input = input.iloc[::-1]
-        print('backwards input: ', input)
         indexKey = df[self.input_items[0]].drop_duplicates()
         for j, k in indexKey.iteritems():
             for i, x in input.iteritems():
@@ -345,22 +347,10 @@ class firstRowCount(BaseTransformer):
     def execute(self, df):
         df = df.copy()
         count = 0
-        row = []
-        input = df[self.input_items[0]]
-        print('frontwards input: ', input)
-        input = input.iloc[::-1]
-        print('backwards input: ', input)
-        indexKey = df[self.input_items[0]].drop_duplicates()
-        for j, k in indexKey.iteritems():
-            for i, x in input.iteritems():
-                if (k == x):
-                    row.append(i)
-                    break
 
-        for reference in row:
-            if (df[self.input_items[1]][reference] == self.condition):
+        for i, inputItem in enumerate(self.input_item):
+            if (inputItem == True):
                 count = count + 1
-
         d = {'count':[count]}
         df[self.output_items] = pd.DataFrame(d)
         print('the row is :', row)
