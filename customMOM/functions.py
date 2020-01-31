@@ -198,6 +198,44 @@ class conditionCount(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class conditionCountBool(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        for i,x in df[self.input_items].iterrows():
+            if (str(x[0]) == str(self.condition)):
+                count = count + 1
+        d = {'count':[count]}
+        df[self.output_items] = pd.DataFrame(d)
+
+        return df
+
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=bool,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=str)
+        )
+        outputs = []
+        return (inputs, outputs)
+
+
 class firstOccurenceRelation(BaseTransformer):
 
     def __init__(self, input_items, condition, output_items):
