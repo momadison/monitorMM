@@ -212,6 +212,8 @@ class conditionCountBool(BaseTransformer):
         for i,x in df[self.input_items].iterrows():
             if (str(x[0]) == str(self.condition)):
                 count = count + 1
+        logger.info('My total count of True is: ')
+        logger.info(count)
         d = {'count':[count]}
         df[self.output_items] = pd.DataFrame(d)
 
@@ -232,7 +234,8 @@ class conditionCountBool(BaseTransformer):
             name='condition',
             datatype=str)
         )
-        outputs = []
+        outputs = [
+            ui.UIFunctionOutSingle(name='output_items', datatype=int, description='Count of condition')]
         return (inputs, outputs)
 
 
