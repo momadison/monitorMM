@@ -131,3 +131,213 @@ class monthlyRate(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class highestIndexOccurence(BaseTransformer):
+    import numpy as np
+
+    def __init__(self, input_items, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        outputItem = df[self.input_items].iloc[0:,0].value_counts().idxmax()
+        d = {'winner':[outputItem]}
+        df[self.output_items] = pd.DataFrame(d)
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        outputs = []
+        return (inputs, outputs)
+
+class conditionCount(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        for i,x in df[self.input_items].iterrows():
+            if (str(x[0]) == str(self.condition)):
+                count = count + 1
+        d = {'count':[count]}
+        df[self.output_items] = pd.DataFrame(d)
+
+        return df
+
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=str)
+        )
+        outputs = []
+        return (inputs, outputs)
+
+class firstOccurenceRelation(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        row = []
+        input = df[self.input_items[0]]
+        indexKey = df[self.input_items[0]].drop_duplicates()
+        for j, k in indexKey.iteritems():
+            for i, x in input.iteritems():
+                if (k == x):
+                    row.append(i)
+                    break
+
+        for reference in row:
+            if (df[self.input_items[1]][reference] == self.condition):
+                count = count + 1
+
+        d = {'count':[count]}
+        df[self.output_items] = pd.DataFrame(d)
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=str)
+        )
+        outputs = []
+        return (inputs, outputs)
+
+class lastOccurenceRelation(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        row = []
+        input = df[self.input_items[0]]
+        print('frontwards input: ', input)
+        input = input.iloc[::-1]
+        print('backwards input: ', input)
+        indexKey = df[self.input_items[0]].drop_duplicates()
+        for j, k in indexKey.iteritems():
+            for i, x in input.iteritems():
+                if (k == x):
+                    row.append(i)
+                    break
+
+        for reference in row:
+            if (df[self.input_items[1]][reference] == self.condition):
+                count = count + 1
+
+        d = {'count':[count]}
+        df[self.output_items] = pd.DataFrame(d)
+        print('the row is :', row)
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=str)
+        )
+        outputs = []
+        return (inputs, outputs)
+
+class firstRowCount(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        row = []
+        input = df[self.input_items[0]]
+        print('frontwards input: ', input)
+        input = input.iloc[::-1]
+        print('backwards input: ', input)
+        indexKey = df[self.input_items[0]].drop_duplicates()
+        for j, k in indexKey.iteritems():
+            for i, x in input.iteritems():
+                if (k == x):
+                    row.append(i)
+                    break
+
+        for reference in row:
+            if (df[self.input_items[1]][reference] == self.condition):
+                count = count + 1
+
+        d = {'count':[count]}
+        df[self.output_items] = pd.DataFrame(d)
+        print('the row is :', row)
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=str)
+        )
+        outputs = []
+        return (inputs, outputs)

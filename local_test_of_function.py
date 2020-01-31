@@ -92,9 +92,10 @@ df = fn.execute(df)
 print(df)
 
 '''
-from customMOM.functions import monthlyRate
 
-d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
+from customMOM.functions import lastOccurenceRelation
+
+d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
      'alertEmail': ['mattomadison@gmail.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com','mattomadison@me.com'],
      'alertPhoneNumber': ['9588473456','9847323748', '9048732312','9723450976','9847323748', '9048732312','9723450976','9723450976'],
@@ -106,12 +107,17 @@ d = {'id': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','Testdevice
      'descriptiveLocation': ['Bathroom', 'Bathroom', 'Kitchen', 'Bathroom', 'Basement', 'Kitchen', 'Bathroom', 'Basement'],
      'country': ['United States','United States','United States','United States','United States','United States','United States','United States'],
      'state': ['Texas','Texas','Texas','Texas','Texas','Texas','Texas','Texas'],
+     'zone': ['east coast', 'east coast', 'south', 'south', 'west coast', 'south', 'south', 'south'],
+     'hazard1': [9,'NaN','NaN','NaN','NaN','NaN','NaN','NaN']
+     'hazard2': [6,'NaN','NaN','NaN','NaN','NaN','NaN','NaN']
+     'hazard3': [4,'NaN','NaN','NaN','NaN','NaN','NaN','NaN']
      }
 df = pd.DataFrame(data=d)
 
-fn = monthlyRate(
-     input_items=['policyId'],
-     output_items=['new_column']
+fn = lastOccurenceRelation(
+     input_items=['id','zone'],
+     output_items=['new_column'],
+     condition = 'south'
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
