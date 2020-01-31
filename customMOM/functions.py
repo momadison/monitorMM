@@ -406,4 +406,7 @@ class valueCountsValue(BaseTransformer):
                 is_output_datatype_derived = True)
                       )
         outputs = []
+        outputs.append(
+            ui.UIFunctionOutSingle(name='output_items', datatype=str, description = 'list of value_counts() values')
+        )
         return (inputs,outputs)
