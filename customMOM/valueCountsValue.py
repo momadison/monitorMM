@@ -29,9 +29,9 @@ class valueCountsValue(BaseTransformer):
         print()
         for i, inputItem in enumerate(self.input_items):
             outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
-            outputItem = outputItem.index.tolist()
+            #outputItem = outputItem.index.tolist()
             print('this is my list: ', outputItem)
-            df[self.output_items[i]] = pd.Series(outputItem)
+            df[self.output_items[i]] = outputItem[0]
         logger.info("value counts dataframe: ")
         logger.info(df)
         logger.info('output items alone: ')
