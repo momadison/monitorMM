@@ -33,8 +33,6 @@ class valueCountsValue(BaseTransformer):
             df[self.output_items[i]] = pd.Series(outputItem)
         logger.info("value counts dataframe: ")
         logger.info(df)
-        logger.info("max value: ")
-        logger.info(outputItem.idxmax())
         logger.info('output item indexes: ')
         logger.info(outputItem.index.tolist())
         logger.info('output items alone: ')
