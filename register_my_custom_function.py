@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import valueCountsValue
+from customMOM.functions import dropDuplicatesMOM
 
-db.register_functions([valueCountsValue])
+db.register_functions([dropDuplicatesMOM])

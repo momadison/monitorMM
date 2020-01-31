@@ -410,3 +410,30 @@ class valueCountsValue(BaseTransformer):
             ui.UIFunctionOutSingle(name='output_items', datatype=str, description = 'list of value_counts() values')
         )
         return (inputs,outputs)
+
+class dropDuplicatesMOM(BaseTransformer):
+
+    def __init__(self, input_items, output_items):
+
+        self.input_items = input_items
+        self.output_items = output_items
+        super().__init__()
+    def execute(self, df):
+        df = df.copy()
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = df[self.input_items].drop_duplicates()
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        #define arguments that behave as function inputs
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+                name = 'input_items',
+                datatype=str,
+                description = "Data items adjust",
+                output_item = 'output_items',
+                is_output_datatype_derived = True)
+                      )
+        outputs = []
+        return (inputs,outputs)
