@@ -397,12 +397,12 @@ class valueCountsValue(BaseTransformer):
         logger.info(myOutput)
         logger.info('type of df[input: ', type(df[self.input_items]))
         logger.info('type of myOutput: ', type(MyOutput))
-        #df[self.output_items] = df[self.input_items]
-        merge = [df, MyOutput]
-        myString = str(self.output_items)[1:-1]
-        print(myString)
-        df = pd.concat(merge, axis=1, sort=False)
-        df.rename(columns={0:myString}, inplace=True)
+        df[self.output_items] = df[self.input_items]
+        #merge = [df, MyOutput]
+        #myString = str(self.output_items)[1:-1]
+        #print(myString)
+        #df = pd.concat(merge, axis=1, sort=False)
+        #df.rename(columns={0:myString}, inplace=True)
 
         return df
 
