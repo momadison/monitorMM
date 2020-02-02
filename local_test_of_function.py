@@ -108,7 +108,7 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      'country': ['United States','United States','United States','United States','United States','United States','United States','United States'],
      'state': ['Texas','Texas','Texas','Texas','Texas','Texas','Texas','Texas'],
      'zone': ['east coast', 'east coast', 'south', 'south', 'west coast', 'south', 'south', 'south'],
-     'hazard1': [9,'NaN','NaN','NaN','NaN','NaN','NaN','NaN'],
+     'hazard1': [9,None,None,None,None,None,None,None],
      'hazard2': [6,'NaN','NaN','NaN','NaN','NaN','NaN','NaN'],
      'hazard3': [4,'NaN','NaN','NaN','NaN','NaN','NaN','NaN']
      }
@@ -117,6 +117,7 @@ df = pd.DataFrame(data=d)
 fn = valueCountsValue(
      input_items=['policyId'],
      output_items=['new_column'],
+     #condition=True
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)

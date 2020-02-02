@@ -177,8 +177,8 @@ class conditionCount(BaseTransformer):
         for i,x in df[self.input_items].iterrows():
             if (str(x[0]) == str(self.condition)):
                 count = count + 1
-        d = {'count':[count]}
-        df[self.output_items] = pd.DataFrame(d)
+        for i, input_item in enumerate(self.input_items):
+                df[self.output_items[i]] = count
 
         return df
 
@@ -380,17 +380,19 @@ class valueCountsValue(BaseTransformer):
         self.output_items = output_items
         super().__init__()
     def execute(self, df):
-        df = df.copy()
+        df2 = df.copy()
         print()
         for i, inputItem in enumerate(self.input_items):
             outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
-            outputItem = outputItem.index.tolist()
-            print('this is my list: ', outputItem)
-            df[self.output_items[i]] = "testdevice1, testdevice2, testdevice4"
-        logger.info("value counts dataframe: ")
-        logger.info(df)
-        logger.info('series added to dataframe: ')
-        logger.info(pd.Series(outputItem))
+        MyOutput = pd.DataFrame(outputItem.index.tolist())
+        logger.info('Dataframe to start: \n')
+        logger.info(df2)
+        logger.info('Dataframe to input: \n')
+        logger.info(MyOutput)
+        df2[self.output_items] = MyOutput
+        logger.info('Dataframe after: \n')
+        logger.info(df2)
+        df = df2
 
         return df
 
@@ -437,3 +439,63 @@ class dropDuplicatesMOM(BaseTransformer):
                       )
         outputs = []
         return (inputs,outputs)
+
+class multiplyByFactorMOM(BaseTransformer):
+
+    def __init__(self, input_items, factor, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.factor = float(factor)
+        super().__init__()
+    def execute(self, df):
+        df = df.copy()
+        for i,input_item in enumerate(self.input_items):
+            df[self.output_items[i]] = df[input_item] * self.factor
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        #define arguments that behave as function inputs
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+                name = 'input_items',
+                datatype=float,
+                description = "Data items adjust",
+                output_item = 'output_items',
+                is_output_datatype_derived = True)
+                      )
+        inputs.append(ui.UISingle(
+                name = 'factor',
+                datatype=float)
+                      )
+        outputs = []
+        return (inputs,outputs)
+'''
+    def _calc(self, df):
+        sources_not_in_column = df.index.names
+        df.reset_index(inplace=True)
+        df_temp2 = df.copy()
+        min_date = min(df[‘devicetimestamp’])
+        df.drop(df.index[df[‘devicetimestamp’] == min_date], inplace = True)
+        df[‘previous_utc2’] = df[‘devicetimestamp’].dt.date - dt.timedelta(days=1)
+        df_temp2[‘previous_utc2’] = df_temp2[‘devicetimestamp’].dt.date
+        df_temp2 = df_temp2.drop(columns=[“devicetimestamp”])
+        df_temp2 = df_temp2.rename(columns={self.input_item: “PrevDailyUsage2
+        "})
+        df = df.merge(df_temp2, how=‘inner’, on = [‘previous_utc2’, ‘pipeline_system’])
+        df[self.output_item] = df[self.input_item] - df[‘PrevDailyUsage2’]
+        ‘’'
+        today = dt.datetime.utcnow()
+        prev_day = today - timedelta(days=1)
+        prev_day_top_window = prev_day + timedelta(minutes=16)
+        prev_day_bot_window = prev_day - timedelta(minutes=16)
+        prev_day_values = df.loc[(df[‘rcv_timestamp_utc’] >= prev_day_bot_window) &
+                                 (df[‘rcv_timestamp_utc’] <= prev_day_top_window)][self.input_item]
+        prev_day_values_mean = prev_day_values.mean()
+        df[self.output_item] = df[self.input_item] - prev_day_values_mean
+        ‘’'
+        df.set_index(keys=sources_not_in_column, inplace=True)
+        return df
+'''
+
+
