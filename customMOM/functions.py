@@ -393,7 +393,14 @@ class valueCountsValue(BaseTransformer):
         logger.info('Dataframe after: \n')
         logger.info('First row: \n')
         logger.info(df2.iloc[0])
-        df[self.output_items] = df[self.input_items]
+        print('the type of dfself: ', type(df[self.input_items]))
+        print('the type of MyOutput: ', type(MyOutput))
+        #df[self.output_items] = df[self.input_items]
+        merge = [df, MyOutput]
+        myString = str(self.output_items)[1:-1]
+        print(myString)
+        df = pd.concat(merge, axis=1, sort=False)
+        df.rename(columns={0:myString}, inplace=True)
 
         return df
 
