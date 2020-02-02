@@ -393,8 +393,10 @@ class valueCountsValue(BaseTransformer):
         logger.info('Dataframe after: \n')
         logger.info('First row: \n')
         logger.info(df2.iloc[0])
-        print('the type of dfself: ', type(df[self.input_items]))
-        print('the type of MyOutput: ', type(MyOutput))
+        logger.info('myOutput: ')
+        logger.info(myOutput)
+        logger.info('type of df[input: ', type(df[self.input_items]))
+        logger.info('type of myOutput: ', type(MyOutput))
         #df[self.output_items] = df[self.input_items]
         merge = [df, MyOutput]
         myString = str(self.output_items)[1:-1]
