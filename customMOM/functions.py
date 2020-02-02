@@ -386,15 +386,14 @@ class valueCountsValue(BaseTransformer):
             outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
         MyOutput = pd.DataFrame(outputItem.index.tolist())
         logger.info('Dataframe to start: \n')
-        logger.info(df2)
+        logger.info(df2.iloc[0])
         logger.info('Dataframe to input: \n')
         logger.info(MyOutput)
         df2[self.output_items] = MyOutput
         logger.info('Dataframe after: \n')
-        logger.info(df2)
         logger.info('First row: \n')
         logger.info(df2.iloc[0])
-        df = df2
+        df[self.output_items] = df[self.input_items]
 
         return df
 
