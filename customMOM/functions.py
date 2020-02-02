@@ -392,6 +392,8 @@ class valueCountsValue(BaseTransformer):
         df2[self.output_items] = MyOutput
         logger.info('Dataframe after: \n')
         logger.info(df2)
+        logger.info('First row: \n')
+        logger.info(df2.iloc[0])
         df = df2
 
         return df
