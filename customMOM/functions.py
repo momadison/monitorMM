@@ -255,9 +255,17 @@ class conditionCountBool(BaseTransformer):
         for i,x in df[self.input_items].iterrows():
             if (float(x[0]) == float(self.condition)):
                 count = count + 1
+                logger.info('count is: ')
+                logger.info(count)
+                logger.info('and x is: ')
+                logger.info(x[0])
+                logger.info('and selfCondition is: ')
+                logger.info(self.condition)
+
         for i, input_item in enumerate(self.input_items):
                 df[self.output_items[i]] = count
-
+        logger.info('count is :')
+        logger.info(count)
         logger.info('New dataframe: ')
         logger.info(df)
         return df
