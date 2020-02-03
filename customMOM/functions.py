@@ -180,6 +180,8 @@ class conditionCount(BaseTransformer):
         for i, input_item in enumerate(self.input_items):
                 df[self.output_items[i]] = count
 
+        logger.info('New dataframe: ')
+        logger.info(df)
         return df
 
 
@@ -200,6 +202,45 @@ class conditionCount(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class conditionCountFloat(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        for i,x in df[self.input_items].iterrows():
+            if (float(x[0]) == float(self.condition)):
+                count = count + 1
+        for i, input_item in enumerate(self.input_items):
+                df[self.output_items[i]] = count
+
+        logger.info('New dataframe: ')
+        logger.info(df)
+        return df
+
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=float,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=float)
+        )
+        outputs = []
+        return (inputs, outputs)
+
 class conditionCountBool(BaseTransformer):
 
     def __init__(self, input_items, condition, output_items):
@@ -212,15 +253,13 @@ class conditionCountBool(BaseTransformer):
         df = df.copy()
         count = 0
         for i,x in df[self.input_items].iterrows():
-            if (str(x[0]) == str(self.condition)):
+            if (float(x[0]) == float(self.condition)):
                 count = count + 1
-        logger.info('My total count of True is: ')
-        logger.info(count)
-        logger.info('Log waterAlert Series: ')
-        logger.info(df['waterAlert'])
-        d = {'count':[count]}
-        df[self.output_items] = pd.DataFrame(d)
+        for i, input_item in enumerate(self.input_items):
+                df[self.output_items[i]] = count
 
+        logger.info('New dataframe: ')
+        logger.info(df)
         return df
 
 
@@ -229,19 +268,17 @@ class conditionCountBool(BaseTransformer):
         inputs = []
         inputs.append(ui.UIMultiItem(
             name='input_items',
-            datatype=bool,
+            datatype=float,
             description="Data items adjust",
             output_item='output_items',
             is_output_datatype_derived=True)
         )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=str)
+            datatype=bool)
         )
-        outputs = [
-            ui.UIFunctionOutSingle(name='output_items', datatype=int, description='Count of condition')]
+        outputs = []
         return (inputs, outputs)
-
 
 class firstOccurenceRelation(BaseTransformer):
 
