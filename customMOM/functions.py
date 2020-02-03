@@ -268,7 +268,7 @@ class conditionCountBool(BaseTransformer):
         inputs = []
         inputs.append(ui.UIMultiItem(
             name='input_items',
-            datatype=float,
+            datatype=bool,
             description="Data items adjust",
             output_item='output_items',
             is_output_datatype_derived=True)
