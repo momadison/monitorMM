@@ -275,7 +275,7 @@ class conditionCountBool(BaseTransformer):
         )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=bool)
+            datatype=float)
         )
         outputs = []
         return (inputs, outputs)
