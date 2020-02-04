@@ -274,7 +274,7 @@ class conditionCountBool(BaseTransformer):
             datatype=bool,
             description="Data items adjust",
             output_item='output_items',
-            is_output_datatype_derived=True)
+            is_output_datatype_derived=False)
         )
         inputs.append(ui.UISingle(
             name='condition',
@@ -493,7 +493,7 @@ class dropDuplicatesMOM(BaseTransformer):
         outputs = []
         return (inputs,outputs)
 
-class multiplyByFactorMOM(BaseTransformer):
+class multiplyByFactorMM(BaseTransformer):
 
     def __init__(self, input_items, factor, output_items):
         self.input_items = input_items
@@ -515,7 +515,7 @@ class multiplyByFactorMOM(BaseTransformer):
                 datatype=float,
                 description = "Data items adjust",
                 output_item = 'output_items',
-                is_output_datatype_derived = True)
+                is_output_datatype_derived = False)
                       )
         inputs.append(ui.UISingle(
                 name = 'factor',
@@ -561,7 +561,7 @@ class countMOM(BaseTransformer):
     def execute(self, df):
         df = df.copy()
         for i, input_item in enumerate(self.input_items):
-                df[self.output_items[i]] = len(df[self.input_items])
+                df[self.output_items[i]] = int(len(df[self.input_items]))
 
         return df
 
@@ -573,7 +573,7 @@ class countMOM(BaseTransformer):
             datatype=str,
             description="Data items adjust",
             output_item='output_items',
-            is_output_datatype_derived=True)
+            is_output_datatype_derived=False)
         )
         outputs = []
         return (inputs, outputs)
@@ -603,7 +603,4 @@ class countMOM2(BaseTransformer):
             is_output_datatype_derived=True)
         )
         outputs = []
-        outputs.append(
-            ui.UIFunctionOutSingle(name='output_items', datatype=int, description='list of value_counts() values')
-        )
         return (inputs, outputs)
