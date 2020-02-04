@@ -128,10 +128,10 @@ class monthlyRate(BaseTransformer):
         inputs = []
         inputs.append(ui.UIMultiItem(
             name='input_items',
-            datatype=int,
+            datatype=float,
             description="Data items adjust",
             output_item='output_items',
-            is_output_datatype_derived=False)
+            is_output_datatype_derived=True)
         )
         outputs = []
         return (inputs, outputs)
