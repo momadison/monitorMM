@@ -255,7 +255,7 @@ class conditionCountBool(BaseTransformer):
         for i,x in df[self.input_items].iterrows():
             logger.info('x is: ')
             logger.info(x[0])
-            #if (x[0] !== None):
+            if (x[0] !== None):
                 #if (float(x[0]) == float(self.condition)):
             count = count + 1
             logger.info('count is: ')
