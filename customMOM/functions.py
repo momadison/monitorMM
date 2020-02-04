@@ -94,7 +94,6 @@ class CountTrue(BaseTransformer):
 
 
 class monthlyRate(BaseTransformer):
-    import numpy as np
 
     def __init__(self, input_items, output_items):
         self.input_items = input_items
@@ -102,18 +101,24 @@ class monthlyRate(BaseTransformer):
         super().__init__()
 
     def execute(self, df):
+        sources_not_in_column = df.index.names
+        print('sources not in column: ', sources_not_in_column)
+        print('before reset: ', df)
+        df.reset_index(inplace=True)
+        print('after reset: ', df)
         df = df.copy()
-        firstDate = df['RCV_TIMESTAMP_UTC'].iloc[0]
-        lastDate = df['RCV_TIMESTAMP_UTC'].iloc[-1]
-        difference = (lastDate - firstDate)
+        minDate = min(df['RCV_TIMESTAMP_UTC'])
+        today = dt.datetime.utcnow()
+        difference = (today - minDate)
         difference = difference / np.timedelta64(1, 'D')
         logger.info('Total Time of reporting: ')
         logger.info(difference)
-        rate = len(df[self.input_items])
+        rate = len(df[self.input_items]) * (30/difference)
         logger.info('Deployment Monthly Rate: ')
         logger.info(rate)
-        d = {'Rate':[rate]}
-        df[self.output_items] = pd.DataFrame(d)
+
+        for i, input_item in enumerate(self.input_items):
+                df[self.output_items[i]] = rate
 
         return df
 
@@ -126,7 +131,7 @@ class monthlyRate(BaseTransformer):
             datatype=str,
             description="Data items adjust",
             output_item='output_items',
-            is_output_datatype_derived=True)
+            is_output_datatype_derived=False)
         )
         outputs = []
         return (inputs, outputs)
@@ -281,9 +286,6 @@ class conditionCountBool(BaseTransformer):
             datatype=float)
         )
         outputs = []
-        outputs.append(
-            ui.UIFunctionOutSingle(name='output_items', datatype=int, description='count of bool')
-        )
         return (inputs, outputs)
 
 class firstOccurenceRelation(BaseTransformer):
