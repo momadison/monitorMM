@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import highestIndexOccurenceMOM
+from customMOM.functions import valueCountsMOM
 
-db.register_functions([highestIndexOccurenceMOM])
+db.register_functions([valueCountsMOM])

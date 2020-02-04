@@ -66,33 +66,6 @@ class HelloWorld(BaseTransformer):
         return (inputs, outputs)
 '''
 
-
-class CountTrue(BaseTransformer):
-
-        def __init__(self,input_item, output_item):
-            self.input_item = input_item
-            self.output_item = output_item
-            super().__init__()
-
-        def execute(self, df):
-            df = df.copy()
-            count = 0
-            for i, inputItem in enumerate(self.input_item):
-                if (inputItem == True):
-                    count = count + 1
-            df[self.output_item] = count
-            return df
-
-        @classmethod
-        def build_ui(cls):
-
-            inputs = [ui.UISingle(name='input_item', datatype=bool, description='series of booleans')]
-            outputs = [
-                ui.UIFunctionOutSingle(name='output_item', datatype=int,
-                                       description='Output item produced by function')]
-            return (inputs, outputs)
-
-
 class monthlyRate(BaseTransformer):
 
     def __init__(self, input_items, output_items):
@@ -382,50 +355,41 @@ class lastOccurenceRelation(BaseTransformer):
         return (inputs, outputs)
 
 
-class valueCountsValue(BaseTransformer):
+class valueCountsMOM(BaseTransformer):
 
-    def __init__(self, input_items,  output_items):
+    def __init__(self, input_items, data_switch, output_items):
         self.input_items = input_items
         self.output_items = output_items
+        self.data_switch = data_switch
         super().__init__()
     def execute(self, df):
-        df2 = df.copy()
-        print()
-        for i, inputItem in enumerate(self.input_items):
-            outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
-        MyOutput = pd.DataFrame(outputItem.index.tolist())
-        logger.info('Dataframe to start: \n')
-        logger.info(df2.iloc[0])
-        logger.info('Dataframe to input: \n')
-        logger.info(MyOutput)
-        df2[self.output_items] = MyOutput
-        logger.info('Dataframe after: \n')
-        logger.info('First row: \n')
-        logger.info(df2.iloc[0])
-        logger.info('myOutput: ')
-        logger.info(myOutput)
-        logger.info('type of df[input: ', type(df[self.input_items]))
-        logger.info('type of myOutput: ', type(MyOutput))
-        df[self.output_items] = df[self.input_items]
-        #merge = [df, MyOutput]
-        #myString = str(self.output_items)[1:-1]
-        #print(myString)
-        #df = pd.concat(merge, axis=1, sort=False)
-        #df.rename(columns={0:myString}, inplace=True)
+        df = df.copy()
+        outputItem =  df[self.input_items].iloc[0:,0].value_counts(dropna=True, sort=True)
+        if (self.data_switch == 1):
+            MyOutput = (outputItem.index.tolist())
+        else:
+            MyOutput = (outputItem.tolist())
+        for x in range(len(MyOutput),len(df[self.input_items])):
+            MyOutput.append(np.nan)
+        df[self.output_items] = pd.DataFrame(MyOutput)
 
         return df
 
     @classmethod
     def build_ui(cls):
-        #define arguments that behave as function inputs
         inputs = []
         inputs.append(ui.UIMultiItem(
                 name = 'input_items',
                 datatype=str,
                 description = "Data items adjust",
                 output_item = 'output_items',
-                is_output_datatype_derived = True)
+                is_output_datatype_derived = False)
                       )
+        inputs.append(ui.UISingle(
+            name='factor',
+            description = "Enter 1 for index 0 for value",
+            datatype=float)
+        )
         outputs = []
         outputs.append(
             ui.UIFunctionOutSingle(name='output_items', datatype=str, description = 'list of value_counts() values')
