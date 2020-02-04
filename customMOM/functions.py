@@ -371,7 +371,7 @@ class valueCountsMM(BaseTransformer):
             MyOutput = (outputItem.tolist())
         for x in range(len(MyOutput),len(df[self.input_items])):
             MyOutput.append(np.nan)
-        df[self.output_items] = pd.DataFrame(MyOutput)
+        df[self.output_items] = pd.DataFrame(MyOutput,index=df.index)
 
         return df
 

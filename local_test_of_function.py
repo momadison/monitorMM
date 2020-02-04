@@ -93,7 +93,7 @@ print(df)
 
 '''
 
-from customMOM.functions import valueCounts
+from customMOM.functions import valueCountsMM
 
 d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
@@ -116,7 +116,7 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      }
 df = pd.DataFrame(data=d)
 
-fn = valueCounts(
+fn = valueCountsMM(
      input_items=['zone'],
      output_items=['new_column'],
      data_switch=0
