@@ -260,7 +260,7 @@ class conditionCountBool(BaseTransformer):
                     count = count + 1
 
         for i, input_item in enumerate(self.input_items):
-                df[self.output_items[i]] = count
+            df[self.output_items.iloc[i]] = count
         logger.info('count is :')
         logger.info(count)
         logger.info('New dataframe: ')
@@ -275,8 +275,8 @@ class conditionCountBool(BaseTransformer):
             name='input_items',
             datatype=bool,
             description="Data items adjust",
-            output_item='output_items')
-            #is_output_datatype_derived=True)
+            output_item='output_items',
+            is_output_datatype_derived=True)
         )
         inputs.append(ui.UISingle(
             name='condition',
