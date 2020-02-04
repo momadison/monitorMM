@@ -93,7 +93,7 @@ print(df)
 
 '''
 
-from customMOM.functions import conditionCountBool
+from customMOM.functions import countMOM
 
 d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
@@ -115,7 +115,7 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      }
 df = pd.DataFrame(data=d)
 
-fn = conditionCountBool(
+fn = countMOM(
      input_items=['waterAlert2'],
      output_items=['new_column'],
      condition=1
