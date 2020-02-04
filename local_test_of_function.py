@@ -93,7 +93,7 @@ print(df)
 
 '''
 
-from customMOM.functions import countNotNoneMOM
+from customMOM.functions import monthlyRate
 
 d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
@@ -111,12 +111,13 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      'hazard1': [9,None,None,None,None,None,None,None],
      'hazard2': [6,'NaN','NaN','NaN','NaN','NaN','NaN','NaN'],
      'hazard3': [4,'NaN','NaN','NaN','NaN','NaN','NaN','NaN'],
-     'waterAlert2': [1.000,0.000,None,1.000,0.000,None,1.000,0.000]
+     'waterAlert2': [1.000,0.000,None,1.000,0.000,None,1.000,0.000],
+     'deploymentCount': [12,12,12,12,12,12,12,12]
      }
 df = pd.DataFrame(data=d)
 
-fn = countNotNoneMOM(
-     input_items=['hazard1'],
+fn = monthlyRate(
+     input_items=['deploymentCount'],
      output_items=['new_column'],
      #condition=9
 )
