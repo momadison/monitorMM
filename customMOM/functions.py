@@ -280,13 +280,12 @@ class firstOccurenceRelation(BaseTransformer):
                 if (k == x):
                     row.append(i)
                     break
-
         for reference in row:
             if (df[self.input_items[1]][reference] == self.condition):
                 count = count + 1
 
-        d = {'count':[count]}
-        df[self.output_items] = pd.DataFrame(d)
+        for i,m in df[self.input_items[0]].iteritems():
+            df[self.output_items[0]] = count
 
         return df
 
@@ -298,7 +297,7 @@ class firstOccurenceRelation(BaseTransformer):
             datatype=str,
             description="Data items adjust",
             output_item='output_items',
-            is_output_datatype_derived=True)
+            is_output_datatype_derived=False)
         )
         inputs.append(ui.UISingle(
             name='condition',
@@ -333,7 +332,7 @@ class lastOccurenceRelation(BaseTransformer):
                 count = count + 1
 
         d = {'count':[count]}
-        df[self.output_items] = pd.DataFrame(d)
+        df[self.output_items] = pd.DataFrame(d,index=df.index)
         print('the row is :', row)
         return df
 
@@ -569,3 +568,5 @@ class countMOM2(BaseTransformer):
         )
         outputs = []
         return (inputs, outputs)
+
+
