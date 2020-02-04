@@ -258,10 +258,6 @@ class conditionCountBool(BaseTransformer):
             if (x[0] != None):
                 if(x[0]==self.condition):
                     count = count + 1
-                    logger.info('count is: ')
-                    logger.info(count)
-                    logger.info('and selfCondition is: ')
-                    logger.info(self.condition)
 
         for i, input_item in enumerate(self.input_items):
                 df[self.output_items[i]] = count
@@ -278,9 +274,9 @@ class conditionCountBool(BaseTransformer):
         inputs.append(ui.UIMultiItem(
             name='input_items',
             datatype=bool,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=True)
+            description="Data items adjust")
+            #output_item='output_items',
+            #is_output_datatype_derived=True)
         )
         inputs.append(ui.UISingle(
             name='condition',
