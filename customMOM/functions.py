@@ -258,9 +258,8 @@ class conditionCountBool(BaseTransformer):
         df = df.copy()
         count = 0
         for i,x in df[self.input_items].iterrows():
-            if (not(np.isnan(x[0]))):
-                if(x[0]==self.condition):
-                    count = count + 1
+            if (x[0]==self.condition):
+                count = count + 1
 
         for i, input_item in enumerate(self.input_items):
             print('the input item is: ', input_item)
@@ -589,13 +588,15 @@ class countNotNoneMOM(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        count = 0
-        for i, x in df[self.input_items].iterrows():
-            print('x is here: ', x[0])
-            if (not(np.isnan(x[0]))):
-                count = count + 1
+        #count = 0
+        #for i, x in df[self.input_items].iterrows():
+        #    if (not(np.isnan(x[0]))):
+        #        count = count + 1
+        lengthOfFrame = len(df[self.input_items])
+        nanInFrame = df[self.input_items].isnull().sum().sum()
+        notNullInFrame = lengthOfFrame - nanInFrame
         for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+            df[self.output_items[i]] = notNullInFrame
 
         return df
 

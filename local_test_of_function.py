@@ -118,7 +118,7 @@ df = pd.DataFrame(data=d)
 fn = countNotNoneMOM(
      input_items=['hazard1'],
      output_items=['new_column'],
-     #condition=1
+     #condition=9
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
