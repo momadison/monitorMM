@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import countMOM
+from customMOM.functions import countMOM2
 
-db.register_functions([countMOM])
+db.register_functions([countMOM2])

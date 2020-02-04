@@ -578,4 +578,32 @@ class countMOM(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class countMOM2(BaseTransformer):
 
+    def __init__(self, input_items, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        for i, input_item in enumerate(self.input_items):
+                df[self.output_items[i]] = len(df[self.input_items])
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        outputs = []
+        outputs.append(
+            ui.UIFunctionOutSingle(name='output_items', datatype=int, description='list of value_counts() values')
+        )
+        return (inputs, outputs)
