@@ -137,8 +137,7 @@ class monthlyRate(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class highestIndexOccurence(BaseTransformer):
-    import numpy as np
+class highestIndexOccurenceMOM(BaseTransformer):
 
     def __init__(self, input_items, output_items):
         self.input_items = input_items
@@ -150,8 +149,9 @@ class highestIndexOccurence(BaseTransformer):
         outputItem = df[self.input_items].iloc[0:,0].value_counts().idxmax()
         logger.info('the winner is: ', )
         logger.info(outputItem)
-        d = {'winner':[outputItem]}
-        df[self.output_items] = pd.DataFrame(d)
+
+        for i, input_item in enumerate(self.input_items):
+            df[self.output_items[i]] = outputItem
 
         return df
 
@@ -381,42 +381,6 @@ class lastOccurenceRelation(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class firstRowCount(BaseTransformer):
-
-    def __init__(self, input_items, condition, output_items):
-        self.input_items = input_items
-        self.output_items = output_items
-        self.condition = condition
-        super().__init__()
-
-    def execute(self, df):
-        df = df.copy()
-        count = 0
-
-        for i, inputItem in enumerate(self.input_item):
-            if (inputItem == True):
-                count = count + 1
-        d = {'count':[count]}
-        df[self.output_items] = pd.DataFrame(d)
-        print('the row is :', row)
-        return df
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=str,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=True)
-        )
-        inputs.append(ui.UISingle(
-            name='condition',
-            datatype=str)
-        )
-        outputs = []
-        return (inputs, outputs)
 
 class valueCountsValue(BaseTransformer):
 
@@ -506,6 +470,7 @@ class multiplyByFactorMOM(BaseTransformer):
         df = df.copy()
         for i,input_item in enumerate(self.input_items):
             df[self.output_items[i]] = df[input_item] * self.factor
+        print('df after with multiply by factor: ', df[self.output_items])
         return df
 
     @classmethod
