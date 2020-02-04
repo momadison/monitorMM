@@ -495,7 +495,7 @@ class dropDuplicatesMOM(BaseTransformer):
         outputs = []
         return (inputs,outputs)
 
-class multiplyByFactorMM(BaseTransformer):
+class multiplyByFactorMOM(BaseTransformer):
 
     def __init__(self, input_items, factor, output_items):
         self.input_items = input_items
@@ -525,6 +525,8 @@ class multiplyByFactorMM(BaseTransformer):
                       )
         outputs = []
         return (inputs,outputs)
+
+
 '''
     def _calc(self, df):
         sources_not_in_column = df.index.names

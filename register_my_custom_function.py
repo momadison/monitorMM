@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import monthlyRate
+from customMOM.functions import multiplyByFactorMOM
 
-db.register_functions([monthlyRate])
+db.register_functions([multiplyByFactorMOM])
