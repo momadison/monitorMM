@@ -383,7 +383,7 @@ class valueCountsMM(BaseTransformer):
                 datatype=str,
                 description = "Data items adjust",
                 output_item = 'output_items',
-                is_output_datatype_derived = False)
+                is_output_datatype_derived = True)
                       )
         inputs.append(ui.UISingle(
             name='data_switch',
