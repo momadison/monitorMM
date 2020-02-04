@@ -355,7 +355,7 @@ class lastOccurenceRelation(BaseTransformer):
         return (inputs, outputs)
 
 
-class valueCountsMOM(BaseTransformer):
+class valueCountsMM(BaseTransformer):
 
     def __init__(self, input_items, data_switch, output_items):
         self.input_items = input_items
