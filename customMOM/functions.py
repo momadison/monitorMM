@@ -386,9 +386,9 @@ class valueCountsMOM(BaseTransformer):
                 is_output_datatype_derived = False)
                       )
         inputs.append(ui.UISingle(
-            name='factor',
+            name='data_switch',
             description = "Enter 1 for index 0 for value",
-            datatype=float)
+            datatype=int)
         )
         outputs = []
 
