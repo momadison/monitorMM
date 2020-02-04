@@ -370,7 +370,7 @@ class valueCountsMM(BaseTransformer):
         else:
             MyOutput = (outputItem.tolist())
         for x in range(len(MyOutput),len(df[self.input_items])):
-            MyOutput.append(np.nan)
+            MyOutput.append(None)
         df[self.output_items] = pd.DataFrame(MyOutput,index=df.index)
 
         return df
@@ -383,7 +383,7 @@ class valueCountsMM(BaseTransformer):
                 datatype=str,
                 description = "Data items adjust",
                 output_item = 'output_items',
-                is_output_datatype_derived = True)
+                is_output_datatype_derived = False)
                       )
         inputs.append(ui.UISingle(
             name='data_switch',
