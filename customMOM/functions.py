@@ -260,7 +260,7 @@ class conditionCountBool(BaseTransformer):
                     count = count + 1
 
         for i, input_item in enumerate(self.input_items):
-            df[self.output_items.iloc[i]] = count
+            df[self.output_items].iloc[i] = count
         logger.info('count is :')
         logger.info(count)
         logger.info('New dataframe: ')
