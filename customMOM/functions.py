@@ -274,8 +274,8 @@ class conditionCountBool(BaseTransformer):
         inputs.append(ui.UIMultiItem(
             name='input_items',
             datatype=bool,
-            description="Data items adjust")
-            #output_item='output_items',
+            description="Data items adjust",
+            output_item='output_items')
             #is_output_datatype_derived=True)
         )
         inputs.append(ui.UISingle(
@@ -284,7 +284,7 @@ class conditionCountBool(BaseTransformer):
         )
         outputs = []
         outputs.append(
-            ui.UIFunctionOutSingle(name='output_items', datatype=float, description='count of bool')
+            ui.UIFunctionOutSingle(name='output_items', datatype=int, description='count of bool')
         )
         return (inputs, outputs)
 
