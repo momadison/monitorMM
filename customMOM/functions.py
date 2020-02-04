@@ -253,14 +253,14 @@ class conditionCountBool(BaseTransformer):
         df = df.copy()
         count = 0
         for i,x in df[self.input_items].iterrows():
-            logger.info('x is: ')
-            logger.info(x[0])
             if (x[0] != None):
                 if(x[0]==self.condition):
                     count = count + 1
 
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+        #for i, input_item in enumerate(self.input_items):
+            #df[self.output_items] = count
+        d = {'count': [count]}
+        df[self.output_items] = pd.DataFrame(d)
         logger.info('New dataframe being return is: ')
         logger.info(df)
         return df
