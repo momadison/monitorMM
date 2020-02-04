@@ -118,7 +118,7 @@ class monthlyRate(BaseTransformer):
         logger.info(rate)
 
         for i, input_item in enumerate(self.input_items):
-                df[self.output_items[i]] = rate
+            df[self.output_items[i]] = rate
 
         return df
 
@@ -128,7 +128,7 @@ class monthlyRate(BaseTransformer):
         inputs = []
         inputs.append(ui.UIMultiItem(
             name='input_items',
-            datatype=str,
+            datatype=int,
             description="Data items adjust",
             output_item='output_items',
             is_output_datatype_derived=False)

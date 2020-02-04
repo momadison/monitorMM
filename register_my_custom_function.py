@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import countNotNoneMOM
+from customMOM.functions import monthlyRate
 
-db.register_functions([countNotNoneMOM])
+db.register_functions([monthlyRate])
