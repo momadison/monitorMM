@@ -261,6 +261,47 @@ class conditionCountBool(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class conditionCountBool(BaseTransformer):
+
+    def __init__(self, input_items, condition, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        for i,x in df[self.input_items].iterrows():
+            if (x[0]==self.condition):
+                count = count + 1
+
+        for i, input_item in enumerate(self.input_items):
+            print('the input item is: ', input_item)
+            df[self.output_items[i]] = count
+
+        logger.info('New dataframe being return is: ')
+        logger.info(df)
+        return df
+
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=bool,
+            description="Data items adjust",
+            output_item='output_items',
+            is_output_datatype_derived=False)
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=float)
+        )
+        outputs = []
+        return (inputs, outputs)
+
 class firstOccurenceRelation(BaseTransformer):
 
     def __init__(self, input_items, condition, output_items):
@@ -319,10 +360,10 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         df = df.copy()
         count = 0
         indexKey = df[self.input_items].drop_duplicates(keep="last")
+        indexKey.reset_index(inplace=True)
         keyValues = indexKey.index.values
-        test = df[self.input_items2].loc[keyValues[0]]
         for x in keyValues:
-            if (df[self.input_items2].loc[x] == self.condition):
+            if (df[self.input_items2].iloc[x,0] == self.condition):
                 count = count + 1
 
         for i, inputItem in enumerate(self.input_items):
