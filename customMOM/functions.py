@@ -370,6 +370,8 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         indexKey = indexKey.drop_duplicates(keep="last")
         keyValues = indexKey.index.values
         for x in keyValues:
+            if (boolInput.iloc[x,0] == None):
+                boolInput.iloc[x,0] = 1
             if (boolInput.iloc[x,0] == self.condition):
                 count = count + 1
 
