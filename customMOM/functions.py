@@ -362,8 +362,10 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         indexKey = df[self.input_items].drop_duplicates(keep="last")
         indexKey.reset_index(inplace=True)
         keyValues = indexKey.index.values
+        boolInput = df[self.input_items2]
+        boolInput.reset_index(inplace=True)
         for x in keyValues:
-            if (df[self.input_items2].iloc[x,0] == self.condition):
+            if (boolInput.iloc[x,0] == self.condition):
                 count = count + 1
 
         for i, inputItem in enumerate(self.input_items):
