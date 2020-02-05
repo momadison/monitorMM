@@ -363,10 +363,10 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         boolInput = df[self.input_items2]
         indexKey.reset_index(inplace=True)
         boolInput.reset_index(inplace=True)
-        indexKey.drop(columns='id')
-        indexKey.drop(columns='RCV_TIMESTAMP_UTC')
-        boolInput.drop(columns='id')
-        boolInput.drop(columns='RCV_TIMESTAMP_UTC')
+        indexKey.drop('id', axis=1, inplace=True)
+        indexKey.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
+        boolInput.drop('id', axis=1, inplace=True)
+        boolInput.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
         indexKey = indexKey.drop_duplicates(keep="last")
         keyValues = indexKey.index.values
         for x in keyValues:
