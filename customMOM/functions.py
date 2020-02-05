@@ -306,10 +306,11 @@ class firstOccurenceRelation(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class lastOccurenceRelation(BaseTransformer):
+class lastOccurenceRelationCountBool(BaseTransformer):
 
-    def __init__(self, input_items, condition, output_items):
+    def __init__(self, input_items, input_items2, condition, output_items):
         self.input_items = input_items
+        self.input_items2 = input_items2
         self.output_items = output_items
         self.condition = condition
         super().__init__()
@@ -317,23 +318,15 @@ class lastOccurenceRelation(BaseTransformer):
     def execute(self, df):
         df = df.copy()
         count = 0
-        row = []
-        input = df[self.input_items[0]]
-        input = input.iloc[::-1]
-        indexKey = df[self.input_items[0]].drop_duplicates()
-        for j, k in indexKey.iteritems():
-            for i, x in input.iteritems():
-                if (k == x):
-                    row.append(i)
-                    break
+        indexKey = df[self.input_items].drop_duplicates(keep="last")
 
-        for reference in row:
-            if (df[self.input_items[1]][reference] == self.condition):
+        for x in reversed(indexKey.index):
+            if (df[self.input_items2].iloc[x,0] == self.condition):
                 count = count + 1
 
-        d = {'count':[count]}
-        df[self.output_items] = pd.DataFrame(d,index=df.index)
-        print('the row is :', row)
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = count
+
         return df
 
     @classmethod
@@ -342,13 +335,18 @@ class lastOccurenceRelation(BaseTransformer):
         inputs.append(ui.UIMultiItem(
             name='input_items',
             datatype=str,
-            description="Data items adjust",
+            description="DeviceId Indicator",
             output_item='output_items',
             is_output_datatype_derived=True)
         )
+        inputs.append(ui.UIMultiItem(
+            name='input_items2',
+            datatype=bool,
+            description="Boolean Column to match condition")
+        )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=str)
+            datatype=float)
         )
         outputs = []
         return (inputs, outputs)
