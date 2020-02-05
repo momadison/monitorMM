@@ -314,19 +314,30 @@ class firstOccurenceRelation(BaseTransformer):
         df = df.copy()
         count = 0
         row = []
-        input = df[self.input_items[0]]
-        indexKey = df[self.input_items[0]].drop_duplicates()
+        indexKey = df[self.input_items[0]]
+        input = df[self.input_items[1]]
+        indexKey.reset_index(inplace=True)
+        input.reset_index(inplace=True)
+        indexKey.drop('id', axis=1, inplace=True)
+        indexKey.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
+        input.drop('id', axis=1, inplace=True)
+        input.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
+        indexKey = indexKey.drop_duplicates(keep="first")
+        keyValues = indexKey.index.values
+
+        '''
         for j, k in indexKey.iteritems():
             for i, x in input.iteritems():
                 if (k == x):
                     row.append(i[0])
                     break
-        for reference in row:
-            if (df[self.input_items[1]][reference] == self.condition):
+        '''
+        for x in keyValues:
+            if (input.iloc[x,0] == self.condition):
                 count = count + 1
 
-        for i,m in df[self.input_items[0]].iteritems():
-            df[self.output_items[0]] = count
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = count
 
         return df
 
