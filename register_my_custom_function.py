@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import lastOccurenceRelationCountBoolMM
+from customMOM.functions import lastOccurenceRelationCountBool
 
-db.register_functions([lastOccurenceRelationCountBoolMM])
+db.register_functions([lastOccurenceRelationCountBool])

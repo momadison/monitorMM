@@ -347,7 +347,7 @@ class firstOccurenceRelation(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class lastOccurenceRelationCountBoolMM(BaseTransformer):
+class lastOccurenceRelationCountBool(BaseTransformer):
 
     def __init__(self, input_items, input_items2, condition, output_items):
         self.input_items = input_items
@@ -369,10 +369,15 @@ class lastOccurenceRelationCountBoolMM(BaseTransformer):
         boolInput.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
         indexKey = indexKey.drop_duplicates(keep="last")
         keyValues = indexKey.index.values
+        condition = self.condition
+        if (condition > 0):
+            condition = True
+        else:
+            condition = False
         for x in keyValues:
             if (boolInput.iloc[x,0] == None):
                 boolInput.iloc[x,0] = True
-            if (boolInput.iloc[x,0] == self.condition):
+            if (boolInput.iloc[x,0] == condition):
                 count = count + 1
 
         for i, inputItem in enumerate(self.input_items):
@@ -397,7 +402,7 @@ class lastOccurenceRelationCountBoolMM(BaseTransformer):
         )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=bool)
+            datatype=float)
         )
         outputs = []
         return (inputs, outputs)
