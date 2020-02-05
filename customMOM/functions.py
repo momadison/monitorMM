@@ -372,7 +372,7 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         for x in keyValues:
             if (boolInput.iloc[x,0] == None):
                 boolInput.iloc[x,0] = True
-            if (boolInput.iloc[x,0] == True):
+            if (boolInput.iloc[x,0] == self.condition):
                 count = count + 1
 
         for i, inputItem in enumerate(self.input_items):
@@ -397,7 +397,7 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=float)
+            datatype=bool)
         )
         outputs = []
         return (inputs, outputs)
