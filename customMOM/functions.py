@@ -347,7 +347,7 @@ class firstOccurenceRelation(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class lastOccurenceRelationCountBool(BaseTransformer):
+class lastOccurenceRelationCountBoolMM(BaseTransformer):
 
     def __init__(self, input_items, input_items2, condition, output_items):
         self.input_items = input_items
