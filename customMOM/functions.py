@@ -81,7 +81,7 @@ class monthlyRate(BaseTransformer):
         print('after reset: ', df)
         df = df.copy()
         minDate = min(df['RCV_TIMESTAMP_UTC'])
-        endDate = max(df['RCV_TIMESTAMP_UTC'])
+        endDate = dt.datetime.utcnow()
         difference = (endDate - minDate)
         difference = difference / np.timedelta64(1, 'D')
         logger.info('Total Time of reporting: ')
@@ -319,7 +319,7 @@ class firstOccurenceRelation(BaseTransformer):
         for j, k in indexKey.iteritems():
             for i, x in input.iteritems():
                 if (k == x):
-                    row.append(i)
+                    row.append(i[0])
                     break
         for reference in row:
             if (df[self.input_items[1]][reference] == self.condition):
