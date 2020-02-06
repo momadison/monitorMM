@@ -481,7 +481,7 @@ class dropDuplicatesMOM(BaseTransformer):
         outputs = []
         return (inputs,outputs)
 
-class multiplyByFactorMOM(BaseTransformer):
+class multiplyByFactorMM(BaseTransformer):
 
     def __init__(self, input_items, factor, output_items):
         self.input_items = input_items
