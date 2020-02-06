@@ -295,8 +295,9 @@ class conditionCountBool2(BaseTransformer):
 
 class firstOccurenceRelation(BaseTransformer):
 
-    def __init__(self, input_items, condition, output_items):
+    def __init__(self, input_items, input_items2, condition, output_items):
         self.input_items = input_items
+        self.input_items2 = input_items2
         self.output_items = output_items
         self.condition = condition
         super().__init__()
@@ -305,26 +306,19 @@ class firstOccurenceRelation(BaseTransformer):
         df = df.copy()
         count = 0
         row = []
-        indexKey = df[self.input_items[0]]
-        input = df[self.input_items[1]]
+        indexKey = df[self.input_items]
+        input = df[self.input_items2]
         indexKey.reset_index(inplace=True, drop=True)
         input.reset_index(inplace=True, drop=True)
         indexKey = indexKey.drop_duplicates(keep="first")
         keyValues = indexKey.index.values
 
-        '''
-        for j, k in indexKey.iteritems():
-            for i, x in input.iteritems():
-                if (k == x):
-                    row.append(i[0])
-                    break
-        '''
         for x in keyValues:
-            if (input.iloc[x] == self.condition):
+            if (input.iloc[x,0] == self.condition):
                 count = count + 1
 
         for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i-1]] = count
+            df[self.output_items[i]] = count
 
         return df
 
@@ -334,10 +328,15 @@ class firstOccurenceRelation(BaseTransformer):
         inputs.append(ui.UIMultiItem(
             name='input_items',
             datatype=str,
-            description="Data items adjust",
+            description="Unique Device ID Column",
             output_item='output_items',
             is_output_datatype_derived=False)
         )
+        inputs.append(ui.UIMultiItem(
+            name='input_items2',
+            description='Search for Condition Column',
+            datatype=str
+        ))
         inputs.append(ui.UISingle(
             name='condition',
             datatype=str)
