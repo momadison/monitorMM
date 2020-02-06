@@ -316,8 +316,8 @@ class firstOccurenceRelation(BaseTransformer):
         row = []
         indexKey = df[self.input_items[0]]
         input = df[self.input_items[1]]
-        indexKey.reset_index(inplace=True)
-        input.reset_index(inplace=True)
+        indexKey.reset_index(inplace=True, drop=True)
+        input.reset_index(inplace=True, drop=True)
         indexKey.drop('id', axis=1, inplace=True)
         indexKey.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
         input.drop('id', axis=1, inplace=True)
