@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import conditionCountBool2
+from customMOM.functions import multiplyByFactorMM
 
-db.register_functions([conditionCountBool2])
+db.register_functions([multiplyByFactorMM])

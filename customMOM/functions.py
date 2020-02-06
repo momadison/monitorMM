@@ -569,10 +569,6 @@ class countNotNoneMOM(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        #count = 0
-        #for i, x in df[self.input_items].iterrows():
-        #    if (not(np.isnan(x[0]))):
-        #        count = count + 1
         lengthOfFrame = len(df[self.input_items])
         nanInFrame = df[self.input_items].isnull().sum().sum()
         notNullInFrame = lengthOfFrame - nanInFrame
