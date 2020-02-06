@@ -75,20 +75,13 @@ class monthlyRate(BaseTransformer):
 
     def execute(self, df):
         sources_not_in_column = df.index.names
-        print('sources not in column: ', sources_not_in_column)
-        print('before reset: ', df)
         df.reset_index(inplace=True)
-        print('after reset: ', df)
         df = df.copy()
         minDate = min(df['RCV_TIMESTAMP_UTC'])
         endDate = dt.datetime.utcnow()
         difference = (endDate - minDate)
         difference = difference / np.timedelta64(1, 'D')
-        logger.info('Total Time of reporting: ')
-        logger.info(difference)
         rate = (df[self.input_items]) * (30/difference)
-        logger.info('Deployment Monthly Rate: ')
-        logger.info(rate)
 
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = rate
@@ -236,11 +229,8 @@ class conditionCountBool(BaseTransformer):
                 count = count + 1
 
         for i, input_item in enumerate(self.input_items):
-            print('the input item is: ', input_item)
             df[self.output_items[i]] = count
 
-        logger.info('New dataframe being return is: ')
-        logger.info(df)
         return df
 
 
