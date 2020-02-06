@@ -261,47 +261,6 @@ class conditionCountBool(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class conditionCountBool(BaseTransformer):
-
-    def __init__(self, input_items, condition, output_items):
-        self.input_items = input_items
-        self.output_items = output_items
-        self.condition = condition
-        super().__init__()
-
-    def execute(self, df):
-        df = df.copy()
-        count = 0
-        for i,x in df[self.input_items].iterrows():
-            if (x[0]==self.condition):
-                count = count + 1
-
-        for i, input_item in enumerate(self.input_items):
-            print('the input item is: ', input_item)
-            df[self.output_items[i]] = count
-
-        logger.info('New dataframe being return is: ')
-        logger.info(df)
-        return df
-
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=bool,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=False)
-        )
-        inputs.append(ui.UISingle(
-            name='condition',
-            datatype=float)
-        )
-        outputs = []
-        return (inputs, outputs)
-
 class conditionCountBool2(BaseTransformer):
 
     def __init__(self, input_items, condition, output_items):
