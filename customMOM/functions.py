@@ -329,11 +329,11 @@ class firstOccurenceRelation(BaseTransformer):
                     break
         '''
         for x in keyValues:
-            if (input.iloc[x,0] == self.condition):
+            if (input.iloc[x] == self.condition):
                 count = count + 1
 
         for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+            df[self.output_items[i-1]] = count
 
         return df
 
