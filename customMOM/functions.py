@@ -406,6 +406,62 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class lastOccurenceRelationCountFloat(BaseTransformer):
+
+    def __init__(self, input_items, input_items2, condition, output_items):
+        self.input_items = input_items
+        self.input_items2 = input_items2
+        self.output_items = output_items
+        self.condition = condition
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        indexKey = df[self.input_items]
+        input = df[self.input_items2]
+        indexKey.reset_index(inplace=True, drop=True)
+        input.reset_index(inplace=True, drop=True)
+        #indexKey.drop('id', axis=1, inplace=True)
+        #indexKey.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
+        #boolInput.drop('id', axis=1, inplace=True)
+        #boolInput.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
+        indexKey = indexKey.drop_duplicates(keep="last")
+        keyValues = indexKey.index.values
+        condition = self.condition
+
+        for x in keyValues:
+
+            if (input.iloc[x,0] == condition):
+                count = count + 1
+
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = count
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="DeviceId Indicator",
+            output_item='output_items',
+            is_output_datatype_derived=True)
+        )
+        inputs.append(ui.UIMultiItem(
+            name='input_items2',
+            datatype=float,
+            description="Condition Match")
+        )
+        inputs.append(ui.UISingle(
+            name='condition',
+            datatype=float)
+        )
+        outputs = []
+        return (inputs, outputs)
+
 
 class valueCountsMM(BaseTransformer):
 
@@ -617,5 +673,40 @@ class countMOM2(BaseTransformer):
         )
         outputs = []
         return (inputs, outputs)
+
+class HazardCount(BaseTransformer):
+
+        def __init__(self, input_items, output_items):
+            self.output_items = output_items
+            self.input_items = input_items
+            super().__init__()
+
+        def execute(self, df):
+            df = df.copy()
+            waterAlert = df['waterAlert']
+            lowBattery = df['batteryLevel']
+            online = df['isonline']
+            waterHazardCount = len(np.where(waterAlert == True)[0])
+            lowBatteryCount = len(np.where(lowBattery == 0)[0])
+            offlineCount = len(np.where(online == False)[0])
+            count = waterHazardCount + lowBatteryCount + offlineCount
+            for i, input_item in enumerate(self.input_items):
+                df[self.output_items[i]] = count
+
+            return df
+
+        @classmethod
+        def build_ui(cls):
+            inputs = []
+            inputs.append(ui.UIMultiItem(
+                name='input_items',
+                datatype=str,
+                description="Unique ID Column",
+                output_item='output_items',
+                is_output_datatype_derived=False)
+            )
+
+            outputs = []
+            return (inputs, outputs)
 
 

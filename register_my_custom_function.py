@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import firstOccurenceRelation
+from customMOM.functions import HazardCount
 
-db.register_functions([firstOccurenceRelation])
+db.register_functions([HazardCount])

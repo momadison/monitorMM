@@ -93,7 +93,7 @@ print(df)
 
 '''
 
-from customMOM.functions import conditionCountBool
+from customMOM.functions import HazardCount
 
 d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
@@ -113,16 +113,17 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      'hazard3': [4,'NaN','NaN','NaN','NaN','NaN','NaN','NaN'],
      'waterAlert2': [1.000,0.000,None,1.000,0.000,None,1.000,0.000],
      'deploymentCount': [12,12,12,12,12,12,12,12],
+     'isonline': [True,True,True,False,False,True,True,True],
      'deploymentDrop': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow',None,None,None]
 
      }
 df = pd.DataFrame(data=d)
 
-fn = conditionCountBool(
-     input_items=['waterAlert'],
-     #input_items2=['state'],
+fn = HazardCount(
+     input_items=['policyId'],
+     #input_items2=['batteryLevel'],
      output_items=['new_column'],
-     condition=1
+     #condition=2
 )
 
 #df = fn.execute_local_test(db=db, db_schema=db_schema, generate_day=1, to_csv=True)
