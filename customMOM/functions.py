@@ -685,7 +685,7 @@ class HazardCount(BaseTransformer):
             df = df.copy()
             waterAlert = df['waterAlert']
             lowBattery = df['batteryLevel']
-            online = df['isonline']
+            online = df['isOnline']
             waterHazardCount = len(np.where(waterAlert == True)[0])
             lowBatteryCount = len(np.where(lowBattery == 0)[0])
             offlineCount = len(np.where(online == False)[0])
