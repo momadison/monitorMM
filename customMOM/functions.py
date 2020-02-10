@@ -313,12 +313,8 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         count = 0
         indexKey = df[self.input_items]
         boolInput = df[self.input_items2]
-        indexKey.reset_index(inplace=True)
-        boolInput.reset_index(inplace=True)
-        indexKey.drop('id', axis=1, inplace=True)
-        indexKey.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
-        boolInput.drop('id', axis=1, inplace=True)
-        boolInput.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
+        indexKey.reset_index(inplace=True, drop=True)
+        boolInput.reset_index(inplace=True, drop=True)
         indexKey = indexKey.drop_duplicates(keep="last")
         keyValues = indexKey.index.values
         condition = self.condition
@@ -376,10 +372,6 @@ class lastOccurenceRelationCountFloat(BaseTransformer):
         input = df[self.input_items2]
         indexKey.reset_index(inplace=True, drop=True)
         input.reset_index(inplace=True, drop=True)
-        #indexKey.drop('id', axis=1, inplace=True)
-        #indexKey.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
-        #boolInput.drop('id', axis=1, inplace=True)
-        #boolInput.drop('RCV_TIMESTAMP_UTC', axis=1, inplace=True)
         indexKey = indexKey.drop_duplicates(keep="last")
         keyValues = indexKey.index.values
         condition = self.condition
