@@ -93,7 +93,7 @@ print(df)
 
 '''
 
-from customMOM.functions import HazardLifeCycle
+from customMOM.functions import HazardTable
 
 d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
      'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-26 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-28 09:53:10.130000')],
@@ -114,12 +114,13 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      'waterAlert2': [1.000,0.000,None,1.000,0.000,None,1.000,0.000],
      'deploymentCount': [12,12,12,12,12,12,12,12],
      'isOnline': [True,True,True,False,False,True,True,True],
-     'deploymentDrop': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow',None,None,None]
+     'deploymentDrop': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow',None,None,None],
+     'location': ['kitchen', 'kitchen', 'basement', 'sink', 'sink', 'cellar', 'cellar', 'garden']
 
      }
 df = pd.DataFrame(data=d)
 
-fn = HazardLifeCycle(
+fn = HazardTable(
      input_items=['manufacturerDeviceId'],
      #input_items2=['batteryLevel'],
      output_items=['new_column'],
