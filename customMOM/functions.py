@@ -181,7 +181,7 @@ class conditionCountBool(BaseTransformer):
         if (self.condition == 0):
             condition = False
         count = len(np.where(input == condition)[0])
-        for x in range (len(self.input_items)):
+        for x in range (len(input)):
             countFrame.append(count)
         df[self.output_items] = pd.DataFrame(countFrame, index=df.index)
         '''
