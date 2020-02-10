@@ -181,7 +181,7 @@ class conditionCountBool(BaseTransformer):
         if (self.condition == 0):
             condition = False
         count = len(np.where(input == condition)[0])
-        for x in range (len(input)-1):
+        for x in range (len(input)):
             countFrame.append(count)
         df[self.output_items] = pd.DataFrame(countFrame, index=df.index)
         '''
@@ -199,15 +199,19 @@ class conditionCountBool(BaseTransformer):
         inputs.append(ui.UIMultiItem(
             name='input_items',
             datatype=bool,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=False)
+            description="Column To Count",
+            )
         )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=int)
+            datatype=int,
+            description='1 for True 0 for False')
         )
         outputs = []
+        outputs.append(ui.UISingle(
+            name='output_items',
+            datatype=int
+        ))
         return (inputs, outputs)
 
 class conditionCountBool2(BaseTransformer):
