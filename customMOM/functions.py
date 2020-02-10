@@ -182,7 +182,7 @@ class conditionCountBool(BaseTransformer):
         count = len(np.where(input == condition)[0])
 
         for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+            df[self.output_items[i-1]] = count
 
         return df
 
