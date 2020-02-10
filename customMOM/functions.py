@@ -175,12 +175,11 @@ class conditionCountBool(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        count = 0
-        for i,x in df[self.input_items].iterrows():
-            logger.info('this is x: ')
-            logger.info(x)
-            if (x[0]==self.condition):
-                count = count + 1
+        condition = True
+        input = df[self.input_items]
+        if (self.condition == 0):
+            condition = False
+        count = len(np.where(input == condition)[0])
 
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = count
@@ -200,7 +199,7 @@ class conditionCountBool(BaseTransformer):
         )
         inputs.append(ui.UISingle(
             name='condition',
-            datatype=float)
+            datatype=int)
         )
         outputs = []
         return (inputs, outputs)
