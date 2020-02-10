@@ -694,13 +694,16 @@ class HazardLifeCycle(BaseTransformer):
             lifeCycle.append(lifeCycleTime)
 
         if len(lifeCycle) == 0:
-            lifecycle.append(dt.datetime.utcnow() - dt.timedelta(hours=1))
+            falseTimeStamp = dt.datetime.utcnow()
+            trueTimeStamp = dt.datetime.utcnow() - dt.timedelta(hours=1)
+            lifeCycleTime = falseTimeStamp - trueTimeStamp
+            lifeCycle.append(lifeCycleTime)
         averageLifeCycle = sum(lifeCycle, dt.timedelta(0)) / len(lifeCycle)
         result = (averageLifeCycle.days *24) + (averageLifeCycle.seconds//3600)
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = result
 
-        df.set_index(keys=sources_not_in_column, inplace=True)
+        #df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
     @classmethod
