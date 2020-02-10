@@ -709,4 +709,88 @@ class HazardCount(BaseTransformer):
             outputs = []
             return (inputs, outputs)
 
+class HazardLifeCycle(BaseTransformer):
+
+    def __init__(self, input_items, output_items):
+        self.output_items = output_items
+        self.input_items = input_items
+        super().__init__()
+
+
+
+    def execute(self, df):
+        sources_not_in_column = df.index.names
+        df.reset_index(inplace=True)
+        df = df.copy()
+        count = 0
+        lifeCycle = []
+        waterAlert = df['waterAlert']
+        lowBattery = df['batteryLevel']
+        online = df['isOnline']
+        deviceId = df[self.input_items]
+        timeSeries = df['RCV_TIMESTAMP_UTC']
+        waterHazardArr = np.where(waterAlert == True)[0]
+        lowBatteryArr = np.where(lowBattery == 0)[0]
+        offlineArr = np.where(online == False)[0]
+
+        for alert in waterHazardArr:
+            trueTimeStamp = timeSeries[alert]
+            falseTimeStamp = dt.datetime.utcnow()
+            deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
+            for match in deviceMatchArr:
+                if waterAlert[match] == False:
+                    falseTimeStamp = timeSeries[match]
+                    break
+            lifeCycleTime = falseTimeStamp - trueTimeStamp
+            lifeCycle.append(lifeCycleTime)
+
+        for alert in lowBatteryArr:
+            trueTimeStamp = timeSeries[alert]
+            falseTimeStamp = dt.datetime.utcnow()
+            deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
+            for match in deviceMatchArr:
+                if waterAlert[match] > 0:
+                    falseTimeStamp = timeSeries[match]
+                    break
+            lifeCycleTime = falseTimeStamp - trueTimeStamp
+            lifeCycle.append(lifeCycleTime)
+
+        for alert in offlineArr:
+            trueTimeStamp = timeSeries[alert]
+            falseTimeStamp = dt.datetime.utcnow()
+            deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
+            for match in deviceMatchArr:
+                if waterAlert[match] == True:
+                    falseTimeStamp = timeSeries[match]
+                    break
+            lifeCycleTime = falseTimeStamp - trueTimeStamp
+            lifeCycle.append(lifeCycleTime)
+
+        averageLifeCycle = sum(lifeCycle, dt.timedelta(0)) / len(lifeCycle)
+        result = (averageLifeCycle.days *24) + (averageLifeCycle.seconds//3600)
+        for i, input_item in enumerate(self.input_items):
+            df[self.output_items[i]] = result
+
+        df.set_index(keys=sources_not_in_column, inplace=True)
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Unique ID Column",
+            output_item='output_items',
+            is_output_datatype_derived=False)
+        )
+
+        outputs = []
+        return (inputs, outputs)
+
+
+
 

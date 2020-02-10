@@ -93,15 +93,15 @@ print(df)
 
 '''
 
-from customMOM.functions import HazardCount
+from customMOM.functions import HazardLifeCycle
 
 d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatterycritical','TestdeviceWhiBatteryLow','TestdeviceWhiNormal','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiWaterleak'],
-     'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-27 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-27 09:53:10.130000')],
+     'RCV_TIMESTAMP_UTC': [pd.to_datetime('2020-01-21 10:50:36.604000'),pd.to_datetime('2020-01-21 10:50:44.524000'),pd.to_datetime('2020-01-26 09:53:04.067000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime(' 2020-01-27 09:53:10.130000'),pd.to_datetime('2020-01-28 09:53:10.130000')],
      'alertEmail': ['mattomadison@gmail.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com', 'momadison@me.com', 'momadison@gmail.com','mattomadison@me.com','mattomadison@me.com'],
      'alertPhoneNumber': ['9588473456','9847323748', '9048732312','9723450976','9847323748', '9048732312','9723450976','9723450976'],
      'appliance': ['washer','washer','washer','washer','washer','washer','washer','washer'],
-     'batteryLevel': [0,1,2,1,0,2,1,0],
-     'waterAlert': [True,False,True,False,True,True,False,True],
+     'batteryLevel': [1,1,2,1,0,2,1,2],
+     'waterAlert': [True,False,True,False,True,False,False,False],
      'policyId': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow','testpolicywaterleak','testpolicyoffline','testpolicynormal'],
      'manufacturerDeviceId': ['TestdeviceWhiBatterycritical','TestdeviceWhiBatterylow','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak','TestdeviceWhiNormal','TestdeviceWhiOffline','TestdeviceWhiWaterleak'],
      'descriptiveLocation': ['Bathroom', 'Bathroom', 'Kitchen', 'Bathroom', 'Basement', 'Kitchen', 'Bathroom', 'Basement'],
@@ -113,14 +113,14 @@ d = {'id': ['TestdeviceWhiOffline','TestdeviceWhiOffline','TestdeviceWhiBatteryc
      'hazard3': [4,'NaN','NaN','NaN','NaN','NaN','NaN','NaN'],
      'waterAlert2': [1.000,0.000,None,1.000,0.000,None,1.000,0.000],
      'deploymentCount': [12,12,12,12,12,12,12,12],
-     'isonline': [True,True,True,False,False,True,True,True],
+     'isOnline': [True,True,True,False,False,True,True,True],
      'deploymentDrop': ['testpolicybatterycritical','testpolicywaterleak','testpolicyoffline','testpolicynormal','whitestpolicybatterylow',None,None,None]
 
      }
 df = pd.DataFrame(data=d)
 
-fn = HazardCount(
-     input_items=['policyId'],
+fn = HazardLifeCycle(
+     input_items=['manufacturerDeviceId'],
      #input_items2=['batteryLevel'],
      output_items=['new_column'],
      #condition=2
