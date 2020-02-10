@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import HazardLifeCycle
+from customMOM.functions import HazardType
 
-db.register_functions([HazardLifeCycle])
+db.register_functions([HazardType])

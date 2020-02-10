@@ -737,7 +737,7 @@ class HazardLifeCycle(BaseTransformer):
             trueTimeStamp = timeSeries[alert]
             falseTimeStamp = dt.datetime.utcnow()
             deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i >= alert]
             for match in deviceMatchArr:
                 if waterAlert[match] == False:
                     falseTimeStamp = timeSeries[match]
@@ -749,7 +749,7 @@ class HazardLifeCycle(BaseTransformer):
             trueTimeStamp = timeSeries[alert]
             falseTimeStamp = dt.datetime.utcnow()
             deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i >= alert]
             for match in deviceMatchArr:
                 if waterAlert[match] > 0:
                     falseTimeStamp = timeSeries[match]
@@ -761,7 +761,7 @@ class HazardLifeCycle(BaseTransformer):
             trueTimeStamp = timeSeries[alert]
             falseTimeStamp = dt.datetime.utcnow()
             deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i >= alert]
             for match in deviceMatchArr:
                 if waterAlert[match] == True:
                     falseTimeStamp = timeSeries[match]
@@ -791,7 +791,7 @@ class HazardLifeCycle(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class HazardTable(BaseTransformer):
+class HazardType(BaseTransformer):
 
     def __init__(self, input_items, output_items):
         self.output_items = output_items
@@ -800,7 +800,6 @@ class HazardTable(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        count = 0
         waterAlert = df['waterAlert']
         batteryLevel = df['batteryLevel']
         isOnline = df['isOnline']
@@ -816,11 +815,8 @@ class HazardTable(BaseTransformer):
             else:
                 hazardType_df.append('Alert Resolved')
 
-        print('hazardType: ', hazardType_df)
-
         df[self.output_items] = pd.DataFrame(hazardType_df, index=df.index)
 
-        #df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
     @classmethod
