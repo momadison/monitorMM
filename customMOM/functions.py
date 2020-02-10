@@ -185,7 +185,6 @@ class conditionCountBool(BaseTransformer):
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = count
 
-        df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
 
@@ -309,6 +308,7 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         super().__init__()
 
     def execute(self, df):
+        sources_not_in_column = df.index.names
         df = df.copy()
         count = 0
         indexKey = df[self.input_items]
@@ -335,6 +335,7 @@ class lastOccurenceRelationCountBool(BaseTransformer):
         for i, inputItem in enumerate(self.input_items):
             df[self.output_items[i]] = count
 
+        df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
     @classmethod
