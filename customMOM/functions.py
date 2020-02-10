@@ -185,6 +185,7 @@ class conditionCountBool(BaseTransformer):
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = count
 
+        df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
 
@@ -704,7 +705,7 @@ class HazardLifeCycle(BaseTransformer):
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = result
 
-        #df.set_index(keys=sources_not_in_column, inplace=True)
+        df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
     @classmethod
