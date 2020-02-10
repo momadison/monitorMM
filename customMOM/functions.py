@@ -737,7 +737,7 @@ class HazardLifeCycle(BaseTransformer):
             trueTimeStamp = timeSeries[alert]
             falseTimeStamp = dt.datetime.utcnow()
             deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i >= alert]
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
             for match in deviceMatchArr:
                 if waterAlert[match] == False:
                     falseTimeStamp = timeSeries[match]
@@ -749,9 +749,9 @@ class HazardLifeCycle(BaseTransformer):
             trueTimeStamp = timeSeries[alert]
             falseTimeStamp = dt.datetime.utcnow()
             deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i >= alert]
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
             for match in deviceMatchArr:
-                if waterAlert[match] > 0:
+                if lowBattery[match] > 0:
                     falseTimeStamp = timeSeries[match]
                     break
             lifeCycleTime = falseTimeStamp - trueTimeStamp
@@ -761,9 +761,9 @@ class HazardLifeCycle(BaseTransformer):
             trueTimeStamp = timeSeries[alert]
             falseTimeStamp = dt.datetime.utcnow()
             deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i >= alert]
+            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
             for match in deviceMatchArr:
-                if waterAlert[match] == True:
+                if online[match] == True:
                     falseTimeStamp = timeSeries[match]
                     break
             lifeCycleTime = falseTimeStamp - trueTimeStamp
@@ -813,7 +813,7 @@ class HazardType(BaseTransformer):
             elif isOnline.iloc[i] == False:
                 hazardType_df.append('Device Offline')
             else:
-                hazardType_df.append('Alert Resolved')
+                hazardType_df.append('Device Test')
 
         df[self.output_items] = pd.DataFrame(hazardType_df, index=df.index)
 
