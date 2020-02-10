@@ -821,8 +821,17 @@ class HazardType(BaseTransformer):
                 onlineHazard = [df[self.input_items].iloc[i], True]
             elif waterHazard[1] == False and batteryHazard[1] == False and onlineHazard[1] == False:
                 hazardType_df.append('Device Initialization')
+            elif waterHazard[1] == True and waterHazard[0] == deviceId[i]:
+                hazardType_df.append('Water Alert Resolved')
+                waterHazard = ['',False]
+            elif batteryHazard[1] == True and batteryHazard[0] == deviceId[i]:
+                hazardType_df.append('Battery Alert Resolved')
+                batteryHazard = ['',False]
+            elif onlineHazard[1] == True and onlineHazard[0] == deviceId[i]:
+                hazardType_df.append('Offline Alert Resolved')
+                onlineHazard = ['',False]
             else:
-                hazardType_df.append('Alert Resolved')
+                hazardType_df.append('Device Initialization')
 
         df[self.output_items] = pd.DataFrame(hazardType_df, index=df.index)
 
