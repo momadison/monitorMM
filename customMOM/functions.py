@@ -182,9 +182,11 @@ class conditionCountBool(BaseTransformer):
         if (self.condition == 0):
             condition = False
         count = len(np.where(input == condition)[0])
+        print('input starts as: ', input)
         for x in range (len(input)):
-            countFrame.append(count)
-        df[self.output_items] = pd.DataFrame(testFrame, index=df.index)
+            input.iloc[x] = count
+            print('input is now: ', input)
+        df[self.output_items] = input
         '''
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = count
