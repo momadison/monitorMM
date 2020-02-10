@@ -728,6 +728,7 @@ class HazardType(BaseTransformer):
         batteryLevel = df['batteryLevel']
         isOnline = df['isOnline']
         deviceId = df[self.input_items]
+        deviceId.reset_index(inplace=True, drop=True)
         hazardType_df = []
         waterHazard = ['',False]
         batteryHazard = ['',False]
