@@ -514,34 +514,6 @@ class multiplyByFactorMM(BaseTransformer):
         return (inputs,outputs)
 
 
-'''
-    def _calc(self, df):
-        sources_not_in_column = df.index.names
-        df.reset_index(inplace=True)
-        df_temp2 = df.copy()
-        min_date = min(df[‘devicetimestamp’])
-        df.drop(df.index[df[‘devicetimestamp’] == min_date], inplace = True)
-        df[‘previous_utc2’] = df[‘devicetimestamp’].dt.date - dt.timedelta(days=1)
-        df_temp2[‘previous_utc2’] = df_temp2[‘devicetimestamp’].dt.date
-        df_temp2 = df_temp2.drop(columns=[“devicetimestamp”])
-        df_temp2 = df_temp2.rename(columns={self.input_item: “PrevDailyUsage2
-        "})
-        df = df.merge(df_temp2, how=‘inner’, on = [‘previous_utc2’, ‘pipeline_system’])
-        df[self.output_item] = df[self.input_item] - df[‘PrevDailyUsage2’]
-        ‘’'
-        today = dt.datetime.utcnow()
-        prev_day = today - timedelta(days=1)
-        prev_day_top_window = prev_day + timedelta(minutes=16)
-        prev_day_bot_window = prev_day - timedelta(minutes=16)
-        prev_day_values = df.loc[(df[‘rcv_timestamp_utc’] >= prev_day_bot_window) &
-                                 (df[‘rcv_timestamp_utc’] <= prev_day_top_window)][self.input_item]
-        prev_day_values_mean = prev_day_values.mean()
-        df[self.output_item] = df[self.input_item] - prev_day_values_mean
-        ‘’'
-        df.set_index(keys=sources_not_in_column, inplace=True)
-        return df
-'''
-
 class countMOM(BaseTransformer):
 
     def __init__(self, input_items, output_items):
@@ -773,13 +745,13 @@ class HazardType(BaseTransformer):
                 onlineHazard = [df[self.input_items].iloc[i], True]
             elif waterHazard[1] == False and batteryHazard[1] == False and onlineHazard[1] == False:
                 hazardType_df.append('Device Initialization')
-            elif waterHazard[1] == True and waterHazard[0] == deviceId[i]:
+            elif waterHazard[1] == True and waterHazard[0] == deviceId.iloc[i]:
                 hazardType_df.append('Water Alert Resolved')
                 waterHazard = ['',False]
-            elif batteryHazard[1] == True and batteryHazard[0] == deviceId[i]:
+            elif batteryHazard[1] == True and batteryHazard[0] == deviceId.iloc[i]:
                 hazardType_df.append('Battery Alert Resolved')
                 batteryHazard = ['',False]
-            elif onlineHazard[1] == True and onlineHazard[0] == deviceId[i]:
+            elif onlineHazard[1] == True and onlineHazard[0] == deviceId.iloc[i]:
                 hazardType_df.append('Offline Alert Resolved')
                 onlineHazard = ['',False]
             else:
