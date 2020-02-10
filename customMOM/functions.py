@@ -38,7 +38,7 @@ class monthlyRate(BaseTransformer):
         for i, input_item in enumerate(self.input_items):
             df[self.output_items[i]] = rate
 
-        #df.set_index(keys=sources_not_in_column, inplace=True)
+        df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
     @classmethod
