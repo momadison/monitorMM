@@ -736,22 +736,22 @@ class HazardType(BaseTransformer):
         for i in range (len(waterAlert)):
             if waterAlert.iloc[i] == True:
                 hazardType_df.append('Water Leak')
-                waterHazard = [deviceId.iloc[i], True]
+                waterHazard = [deviceId.iloc[i,0], True]
             elif batteryLevel.iloc[i] == 0:
                 hazardType_df.append('Low Battery')
-                batteryHazard = [deviceId.iloc[i], True]
+                batteryHazard = [deviceId.iloc[i,0], True]
             elif isOnline.iloc[i] == False:
                 hazardType_df.append('Device Offline')
-                onlineHazard = [deviceId.iloc[i], True]
+                onlineHazard = [deviceId.iloc[i,0], True]
             elif waterHazard[1] == False and batteryHazard[1] == False and onlineHazard[1] == False:
                 hazardType_df.append('Device Initialization')
-            elif waterHazard[1] == True and waterHazard[0] == deviceId.iloc[i]:
+            elif waterHazard[1] == True and waterHazard[0] == deviceId.iloc[i,0]:
                 hazardType_df.append('Water Alert Resolved')
                 waterHazard = ['',False]
-            elif batteryHazard[1] == True and batteryHazard[0] == deviceId.iloc[i]:
+            elif batteryHazard[1] == True and batteryHazard[0] == deviceId.iloc[i,0]:
                 hazardType_df.append('Battery Alert Resolved')
                 batteryHazard = ['',False]
-            elif onlineHazard[1] == True and onlineHazard[0] == deviceId.iloc[i]:
+            elif onlineHazard[1] == True and onlineHazard[0] == deviceId.iloc[i,0]:
                 hazardType_df.append('Offline Alert Resolved')
                 onlineHazard = ['',False]
             else:
