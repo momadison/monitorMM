@@ -736,13 +736,13 @@ class HazardType(BaseTransformer):
         for i in range (len(waterAlert)):
             if waterAlert.iloc[i] == True:
                 hazardType_df.append('Water Leak')
-                waterHazard = [df[self.input_items].iloc[i][1], True]
+                waterHazard = [deviceId.iloc[i], True]
             elif batteryLevel.iloc[i] == 0:
                 hazardType_df.append('Low Battery')
-                batteryHazard = [df[self.input_items].iloc[i][1], True]
+                batteryHazard = [deviceId.iloc[i], True]
             elif isOnline.iloc[i] == False:
                 hazardType_df.append('Device Offline')
-                onlineHazard = [df[self.input_items].iloc[i][1], True]
+                onlineHazard = [deviceId.iloc[i], True]
             elif waterHazard[1] == False and batteryHazard[1] == False and onlineHazard[1] == False:
                 hazardType_df.append('Device Initialization')
             elif waterHazard[1] == True and waterHazard[0] == deviceId.iloc[i]:
