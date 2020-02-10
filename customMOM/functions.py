@@ -344,7 +344,7 @@ class lastOccurenceRelationCountBool(BaseTransformer):
             datatype=str,
             description="DeviceId Indicator",
             output_item='output_items',
-            is_output_datatype_derived=True)
+            is_output_datatype_derived=False)
         )
         inputs.append(ui.UIMultiItem(
             name='input_items2',
