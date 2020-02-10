@@ -694,7 +694,7 @@ class HazardLifeCycle(BaseTransformer):
             lifeCycle.append(lifeCycleTime)
 
         if len(lifeCycle) == 0:
-            lifecycle.append(dt.datetime.utcnow() - 1)
+            lifecycle.append(dt.datetime.utcnow() - dt.timedelta(hours=1))
         averageLifeCycle = sum(lifeCycle, dt.timedelta(0)) / len(lifeCycle)
         result = (averageLifeCycle.days *24) + (averageLifeCycle.seconds//3600)
         for i, input_item in enumerate(self.input_items):
