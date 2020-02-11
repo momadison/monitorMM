@@ -852,7 +852,7 @@ class deviceHealth(BaseTransformer):
             is_output_datatype_derived=False)
         )
         inputs.append(ui.UISingle(
-            name='factor',
+            name='condition',
             datatype=int,
             description='0 is offline and 1 is online')
         )
