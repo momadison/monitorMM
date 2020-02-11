@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import waterLeakDetector
+from customMOM.functions import deviceHealth
 
-db.register_functions([waterLeakDetector])
+db.register_functions([deviceHealth])
