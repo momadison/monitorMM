@@ -1030,7 +1030,7 @@ class reformatDates(BaseTransformer):
             timeSeries.iloc[x] = str(timeSeries.iloc[x].month) + '/' + str(timeSeries.iloc[x].day) + '/' + str(timeSeries.iloc[x].year)
 
 
-        #df.set_index(keys=sources_not_in_column, inplace=True)
+        df.set_index(keys=sources_not_in_column, inplace=True)
         df[self.output_items] = pd.DataFrame(timeSeries, index=df.index)
         return df
 
