@@ -859,6 +859,59 @@ class deviceHealth(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class HazardResolvedCount(BaseTransformer):
+
+    def __init__(self, input_items, output_items):
+        self.output_items = output_items
+        self.input_items = input_items
+        super().__init__()
+
+    def execute(self, df):
+        df = df.copy()
+        count = 0
+        waterAlert = df['waterAlert']
+        batteryLevel = df['batteryLevel']
+        isOnline = df['isOnline']
+        deviceId = df[self.input_items]
+        waterHazard = ['', False]
+        batteryHazard = ['', False]
+        onlineHazard = ['', False]
+
+        for i in range(len(waterAlert)):
+            if waterAlert.iloc[i] == True:
+                waterHazard = [deviceId.iloc[i, 0], True]
+            elif batteryLevel.iloc[i] == 0:
+                batteryHazard = [deviceId.iloc[i, 0], True]
+            elif isOnline.iloc[i] == False:
+                onlineHazard = [deviceId.iloc[i, 0], True]
+            elif waterHazard[1] == True and waterHazard[0] == deviceId.iloc[i, 0]:
+                count = count + 1
+                waterHazard = ['', False]
+            elif batteryHazard[1] == True and batteryHazard[0] == deviceId.iloc[i, 0]:
+                count = count + 1
+                batteryHazard = ['', False]
+            elif onlineHazard[1] == True and onlineHazard[0] == deviceId.iloc[i, 0]:
+                count = count + 1
+                onlineHazard = ['', False]
+
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = count
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Unique ID Column",
+            output_item='output_items',
+            is_output_datatype_derived=False)
+        )
+        outputs = []
+        return (inputs, outputs)
+
 
 
 
