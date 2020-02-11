@@ -1013,6 +1013,44 @@ class offlineCount(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class reformatDates(BaseTransformer):
+
+    def __init__(self, input_items, output_items):
+        self.output_items = output_items
+        self.input_items = input_items
+        super().__init__()
+
+    def execute(self, df):
+        sources_not_in_column = df.index.names
+        df.reset_index(inplace=True)
+        df = df.copy()
+        timeSeries = df['RCV_TIMESTAMP_UTC']
+
+        print('this is the timeseries before: ', timeSeries)
+
+        for x in range (len(timeSeries)):
+            timeSeries.iloc[x] = str(timeSeries.iloc[x].month) + '/' + str(timeSeries.iloc[x].day) + '/' + str(timeSeries.iloc[x].year)
+
+        print('this is now the time series: ', timeSeries)
+
+
+        df.set_index(keys=sources_not_in_column, inplace=True)
+        df[self.output_items] = pd.DataFrame(timeSeries, index=df.index)
+        return df
+
+    @classmethod
+    def build_ui(cls):
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Unique ID Column",
+            output_item='output_items',
+            is_output_datatype_derived=False)
+        )
+        outputs = []
+        return (inputs, outputs)
+
 
 
 

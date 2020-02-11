@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import offlineCount
+from customMOM.functions import reformatDates
 
-db.register_functions([offlineCount])
+db.register_functions([reformatDates])
