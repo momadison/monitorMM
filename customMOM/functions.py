@@ -200,7 +200,8 @@ class conditionCountBool(BaseTransformer):
             name='input_items',
             datatype=bool,
             description="Column To Count",
-            )
+            output_item='output_items',
+            is_output_datatype_derived=False)
         )
         inputs.append(ui.UISingle(
             name='condition',
@@ -208,10 +209,6 @@ class conditionCountBool(BaseTransformer):
             description='1 for True 0 for False')
         )
         outputs = []
-        outputs.append(ui.UISingle(
-            name='output_items',
-            datatype=int
-        ))
         return (inputs, outputs)
 
 class conditionCountBool2(BaseTransformer):
