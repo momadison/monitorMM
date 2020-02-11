@@ -809,10 +809,10 @@ class waterLeakDetector(BaseTransformer):
 
 class deviceHealth(BaseTransformer):
 
-    def __init__(self, input_items, condition, output_items):
+    def __init__(self, input_items, factor, output_items):
         self.input_items = input_items
         self.output_items = output_items
-        self.condition = condition
+        self.condition = factor
         super().__init__()
 
     def execute(self, df):
@@ -852,7 +852,7 @@ class deviceHealth(BaseTransformer):
             is_output_datatype_derived=False)
         )
         inputs.append(ui.UISingle(
-            name='condition',
+            name='factor',
             datatype=int,
             description='0 is offline and 1 is online')
         )
