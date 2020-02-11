@@ -183,10 +183,12 @@ class conditionCountBool(BaseTransformer):
 
         count = len(np.where(input == condition)[0])
 
-        for x in range (len(input)):
-            input.iloc[x] = count
-        logger.info('this goes into the dataframe: ', input)
-        df[self.output_items] = pd.DataFrame(input, index=df.index)
+        logger.info('this goes into the dataframe: ')
+        logger.info(count)
+        for i, inputItem in enumerate(self.input_items):
+            df[self.output_items[i]] = count
+        logger.info('here is the finished dataframe: ')
+        logger.info(df)
 
         return df
 
