@@ -1025,16 +1025,13 @@ class reformatDates(BaseTransformer):
         df.reset_index(inplace=True)
         df = df.copy()
         timeSeries = df['RCV_TIMESTAMP_UTC'].copy()
+        output = []
 
         for x in range (len(timeSeries)):
-            timeSeries.iloc[x] = str(timeSeries.iloc[x].month) + '/' + str(timeSeries.iloc[x].day) + '/' + str(timeSeries.iloc[x].year)
+            output.append(str(timeSeries.iloc[x].month) + '/' + str(timeSeries.iloc[x].day) + '/' + str(timeSeries.iloc[x].year))
 
-        #timeSeries = timeSeries.astype(str)
-        timeSeries = timeSeries.to_string
-        timeSeries.rename('test')
         df.set_index(keys=sources_not_in_column, inplace=True)
-        timeSeries = pd.DataFrame(timeSeries, index=df.index)
-        df[self.output_items] = timeSeries
+        df[self.output_items] = pd.DataFrame(output, index=df.index)
         return df
 
     @classmethod
