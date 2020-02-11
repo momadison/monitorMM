@@ -781,6 +781,37 @@ class HazardType(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
+class waterLeakDetector(BaseTransformer):
+
+    def __init__(self, input_items, output_items):
+        self.input_items = input_items
+        self.output_items = output_items
+        super().__init__()
+
+    def execute(self, df):
+        df=df.copy()
+        waterAlert = df['waterAlert']
+        count = len(np.where(waterAlert == True)[0])
+
+        for i, input_item in enumerate(self.input_items):
+            df[self.output_items[i]] = count
+
+        return df
+
+    @classmethod
+    def build_ui(cls):
+
+        inputs = []
+        inputs.append(ui.UIMultiItem(
+            name='input_items',
+            datatype=str,
+            description="Unique ID Column",
+            output_item='output_items',
+            is_output_datatype_derived=False)
+        )
+        outputs = []
+        return (inputs, outputs)
+
 
 
 
