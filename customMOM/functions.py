@@ -185,7 +185,8 @@ class conditionCountBool(BaseTransformer):
 
         for x in range (len(input)):
             input.iloc[x] = count
-        df[self.output_items] = input
+        logger.info('this goes into the dataframe: ', input)
+        df[self.output_items] = pd.DataFrame(input, index=df.index)
 
         return df
 
