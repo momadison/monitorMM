@@ -1035,7 +1035,7 @@ class reformatDates(BaseTransformer):
 
 
         df.set_index(keys=sources_not_in_column, inplace=True)
-        df[self.output_items] = pd.DataFrame(timeSeries, index=df.index)
+        df[self.output_items] = timeSeries
         return df
 
     @classmethod
