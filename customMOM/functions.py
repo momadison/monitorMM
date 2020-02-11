@@ -1036,7 +1036,7 @@ class reformatDates(BaseTransformer):
         print('timeSeries before conversion', timeSeries)
         timeSeries = timeSeries.astype(str)
         print('timeSeries after Conversion', timeSeries)
-        #df.set_index(keys=sources_not_in_column, inplace=True)
+        df.set_index(keys=sources_not_in_column, inplace=True)
         timeSeries = pd.DataFrame(timeSeries, index=df.index)
         df[self.output_items] = timeSeries
         return df
