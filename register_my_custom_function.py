@@ -14,6 +14,6 @@ db_schema = None
 db = Database(credentials=credentials)
 
 
-from customMOM.functions import lowHealthCount
+from customMOM.functions import highHealthCount
 
-db.register_functions([lowHealthCount])
+db.register_functions([highHealthCount])
