@@ -165,93 +165,6 @@ class conditionCountFloat(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class conditionCountBool(BaseTransformer):
-
-    def __init__(self, input_items, condition, output_items):
-        self.input_items = input_items
-        self.output_items = output_items
-        self.condition = condition
-        super().__init__()
-
-    def execute(self, df):
-        df = df.copy()
-        condition = True
-        input = df[self.input_items]
-
-        if (self.condition == 0):
-            condition = Falsea
-
-        count = len(np.where(input == condition)[0])
-
-        logger.info('this goes into the dataframe: ')
-        logger.info(count)
-        for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i]] = count
-        logger.info('here is the finished dataframe: ')
-        logger.info(df)
-
-        return df
-
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=bool,
-            description="Column To Count",
-            output_item='output_items',
-            is_output_datatype_derived=False)
-        )
-        inputs.append(ui.UISingle(
-            name='condition',
-            datatype=int,
-            description='1 for True 0 for False')
-        )
-        outputs = []
-        return (inputs, outputs)
-
-class conditionCountBool2(BaseTransformer):
-
-    def __init__(self, input_items, condition, output_items):
-        self.output_items = output_items
-        self.condition = condition
-        self.input_items = input_items
-        super().__init__()
-
-    def execute(self, df):
-        df = df.copy()
-        count = 0
-        for i,x in df[self.input_items].iterrows():
-            if (x[0]==self.condition):
-                count = count + 1
-
-        for i, input_item in enumerate(self.input_items):
-            print('the input item is: ', input_item)
-            df[self.output_items[i]] = count
-
-        logger.info('New dataframe being return is: ')
-        logger.info(df)
-        return df
-
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=bool,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=False)
-        )
-        inputs.append(ui.UISingle(
-            name='condition',
-            description='check for true',
-            datatype=bool)
-        )
-        outputs = []
-        return (inputs, outputs)
 
 class firstOccurenceRelation(BaseTransformer):
 
@@ -304,63 +217,6 @@ class firstOccurenceRelation(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class lastOccurenceRelationCountBool(BaseTransformer):
-
-    def __init__(self, input_items, input_items2, condition, output_items):
-        self.input_items = input_items
-        self.input_items2 = input_items2
-        self.output_items = output_items
-        self.condition = condition
-        super().__init__()
-
-    def execute(self, df):
-        #sources_not_in_column = df.index.names
-        df = df.copy()
-        count = 0
-        indexKey = df[self.input_items]
-        boolInput = df[self.input_items2]
-        indexKey.reset_index(inplace=True, drop=True)
-        boolInput.reset_index(inplace=True, drop=True)
-        indexKey = indexKey.drop_duplicates(keep="last")
-        keyValues = indexKey.index.values
-        condition = self.condition
-        if (condition > 0):
-            condition = True
-        else:
-            condition = False
-        for x in keyValues:
-            if (boolInput.iloc[x,0] == None):
-                boolInput.iloc[x,0] = True
-            if (boolInput.iloc[x,0] == condition):
-                count = count + 1
-
-        for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i]] = count
-
-        #df.set_index(keys=sources_not_in_column, inplace=True)
-        return df
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=str,
-            description="DeviceId Indicator",
-            output_item='output_items',
-            is_output_datatype_derived=False)
-        )
-        inputs.append(ui.UIMultiItem(
-            name='input_items2',
-            datatype=bool,
-            description="Boolean Column to match condition")
-        )
-        inputs.append(ui.UISingle(
-            name='condition',
-            datatype=float)
-        )
-        outputs = []
-        return (inputs, outputs)
 
 class lastOccurenceRelationCountFloat(BaseTransformer):
 
@@ -514,33 +370,6 @@ class multiplyByFactorMM(BaseTransformer):
         return (inputs,outputs)
 
 
-class countMOM(BaseTransformer):
-
-    def __init__(self, input_items, output_items):
-        self.input_items = input_items
-        self.output_items = output_items
-        super().__init__()
-
-    def execute(self, df):
-        df = df.copy()
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = int(len(df[self.input_items]))
-
-        return df
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=str,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=False)
-        )
-        outputs = []
-        return (inputs, outputs)
-
 class countNotNoneMOM(BaseTransformer):
 
     def __init__(self, input_items, output_items):
@@ -571,32 +400,6 @@ class countNotNoneMOM(BaseTransformer):
         outputs = []
         return (inputs, outputs)
 
-class countMOM2(BaseTransformer):
-
-    def __init__(self, input_items, output_items):
-        self.input_items = input_items
-        self.output_items = output_items
-        super().__init__()
-
-    def execute(self, df):
-        df = df.copy()
-        for i, input_item in enumerate(self.input_items):
-                df[self.output_items[i]] = len(df[self.input_items])
-
-        return df
-
-    @classmethod
-    def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=str,
-            description="Data items adjust",
-            output_item='output_items',
-            is_output_datatype_derived=True)
-        )
-        outputs = []
-        return (inputs, outputs)
 
 class HazardCount(BaseTransformer):
 
@@ -901,40 +704,6 @@ class HazardResolvedCount(BaseTransformer):
 
     @classmethod
     def build_ui(cls):
-        inputs = []
-        inputs.append(ui.UIMultiItem(
-            name='input_items',
-            datatype=str,
-            description="Unique ID Column",
-            output_item='output_items',
-            is_output_datatype_derived=False)
-        )
-        outputs = []
-        return (inputs, outputs)
-
-class lowHealthCount(BaseTransformer):
-
-    def __init__(self, input_items, output_items):
-        self.input_items = input_items
-        self.output_items = output_items
-        super().__init__()
-
-    def execute(self, df):
-        df=df.copy()
-        online = df['isOnline']
-        lowBattery = df['batteryLevel']
-        lowBatteryCount = len(np.where(lowBattery == 0)[0])
-        onlineCount = len(np.where(online == False)[0])
-        count = lowBatteryCount + onlineCount
-
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
-
-        return df
-
-    @classmethod
-    def build_ui(cls):
-
         inputs = []
         inputs.append(ui.UIMultiItem(
             name='input_items',
