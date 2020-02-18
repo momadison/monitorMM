@@ -638,8 +638,8 @@ class deviceHealth(BaseTransformer):
     def execute(self, df):
         df = df.copy()
         condition = self.condition
-        isOnlineFrame = df['isOnline']
-        inputFrame = df[self.input_items]
+        isOnlineFrame = df['isOnline'].reset_index(inplace=True)
+        inputFrame = df[self.input_items].reset_index(inplace=True)
         output = []
         count = 0
 
