@@ -29,14 +29,21 @@ class monthlyRate(BaseTransformer):
         sources_not_in_column = df.index.names
         df.reset_index(inplace=True)
         df = df.copy()
-        minDate = min(df['RCV_TIMESTAMP_UTC'])
-        endDate = dt.datetime.utcnow()
-        difference = (endDate - minDate)
-        difference = difference / np.timedelta64(1, 'D')
-        rate = (df[self.input_items]) * (30/difference)
+        output = []
+        timeStamps = df['RCV_TIMESTAMP_UTC']
 
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = rate
+        for i in range(len(timeStamps)):
+            startDate = min(timeStamps[:i + 1])
+            endDate = max(timeStamps[:i + 1])
+            if (startDate == endDate):
+                timespan = np.timedelta64(1, 's')
+            else:
+                timespan = endDate - startDate
+            timespan = timespan / np.timedelta64(1, 'D')
+            timeRate = (df[self.input_items].values) * (30/timespan)
+            output.append(round(timeRate[0][0], 2))
+
+        df[self.output_items] = pd.DataFrame(output, index=df.index)
 
         df.set_index(keys=sources_not_in_column, inplace=True)
         return df
