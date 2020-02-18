@@ -638,6 +638,8 @@ class deviceHealth(BaseTransformer):
     def execute(self, df):
         df = df.copy()
         condition = self.condition
+        isOnlineFrame = df['isOnline']
+        inputFrame = df[self.input_items]
         output = []
         count = 0
 
@@ -646,9 +648,9 @@ class deviceHealth(BaseTransformer):
         else:
             condition = False
 
-        for i in range(len(df[self.input_items])):
-            onlineFrame = df['isOnline'][:i+1]
-            deviceFrame = df[self.input_items][:i+1]
+        for i in range(len(inputFrame)):
+            onlineFrame = isOnlineFrame[:i+1]
+            deviceFrame = inputFrame[:i+1]
             deviceFrame = deviceFrame.drop_duplicates(keep="last")
             deviceKeys = deviceFrame.index.values
 
