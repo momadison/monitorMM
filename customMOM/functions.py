@@ -731,10 +731,20 @@ class highHealthCount(BaseTransformer):
         onlineCount = len(np.where(online == True)[0])
         waterCount = len(np.where(waterAlert == False)[0])
         count = lowBatteryCount + onlineCount + waterCount
+        count2 = 0
+        outputItem = []
 
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+        for i in range (len(df[self.input_items])):
+            lowBatteryCount2 = len(np.where(lowBattery[:i+1] == 2)[0])
+            onlineCount2 = len(np.where(online[:i+1] == True)[0])
+            waterCount2 = len(np.where(waterAlert[:i+1] == False)[0])
+            count2 = lowBatteryCount2 + onlineCount2 + waterCount2
+            outputItem.append(count2)
 
+        #for i, input_item in enumerate(self.input_items):
+            #df[self.output_items[i]] = count
+
+        df[self.output_items] = pd.DataFrame(outputItem, index=df.index)
         return df
 
     @classmethod
