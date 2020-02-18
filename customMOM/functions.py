@@ -383,12 +383,15 @@ class countNotNoneMOM(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        lengthOfFrame = len(df[self.input_items])
-        nanInFrame = df[self.input_items].isnull().sum().sum()
-        notNullInFrame = lengthOfFrame - nanInFrame
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = notNullInFrame
+        output = []
+        inputFrame = df[self.input_items]
 
+        for i in range (len(inputFrame)):
+            length = len(inputFrame[:i+1])
+            nanLength = inputFrame[:i+1].isnull().sum().sum()
+            output.append(length - nanLength)
+
+        df[self.output_items] = pd.DataFrame(output, index = df.index)
         return df
 
     @classmethod
