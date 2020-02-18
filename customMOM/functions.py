@@ -352,13 +352,9 @@ class multiplyByFactorMM(BaseTransformer):
         super().__init__()
     def execute(self, df):
         df = df.copy()
-        output = []
-        inputZ = df[self.input_items].values
-        for i in range (len(df[self.input_items])):
-            print('here is value: ', inputZ[i])
-            output.append(inputZ[i][0] * self.factor)
-
-        df[self.output_items] = pd.DataFrame(output, index = df.index)
+        for i,input_item in enumerate(self.input_items):
+            df[self.output_items[i]] = df[input_item] * self.factor
+        print('df after with multiply by factor: ', df[self.output_items])
         return df
 
     @classmethod
