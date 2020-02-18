@@ -648,7 +648,7 @@ class deviceHealth(BaseTransformer):
         else:
             condition = False
 
-        for i in range(len(inputFrame)):
+        for i in range(len(df[self.input_items])):
             onlineFrame = isOnlineFrame[:i+1]
             deviceFrame = inputFrame[:i+1]
             deviceFrame = deviceFrame.drop_duplicates(keep="last")
