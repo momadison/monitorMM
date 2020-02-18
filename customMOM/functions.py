@@ -136,15 +136,13 @@ class conditionCountFloat(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        count = 0
-        for i,x in df[self.input_items].iterrows():
-            if (float(x[0]) == float(self.condition)):
-                count = count + 1
-        for i, input_item in enumerate(self.input_items):
-                df[self.output_items[i]] = count
+        output = []
+        inputFrame = df[self.input_items]
 
-        logger.info('New dataframe: ')
-        logger.info(df)
+        for i in range (len(df[self.input_items])):
+            output.append(len(np.where(inputFrame[:i+1] == self.condition)[0]))
+
+        df[self.output_items] = pd.DataFrame(output, index = df.index)
         return df
 
 
