@@ -595,10 +595,11 @@ class waterLeakDetector(BaseTransformer):
     def execute(self, df):
         df=df.copy()
         waterAlert = df['waterAlert']
-        count = len(np.where(waterAlert == True)[0])
+        output = []
+        for i in range (len(waterAlert)):
+            output.append(len(np.where(waterAlert[:i+1] == True)[0]))
 
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+        df[self.output_items] = pd.DataFrame(output, index = df.index)
 
         return df
 
