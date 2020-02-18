@@ -36,11 +36,13 @@ class monthlyRate(BaseTransformer):
             startDate = min(timeStamps[:i + 1])
             endDate = max(timeStamps[:i + 1])
             if (startDate == endDate):
-                timespan = np.timedelta64(1, 's')
+                timespan = np.timedelta64(1, 'D')
             else:
                 timespan = endDate - startDate
+            if timespan < np.timedelta64(1, 'D'):
+                timespan = np.timedelta64(1, 'D')
             timespan = timespan / np.timedelta64(1, 'D')
-            timeRate = (df[self.input_items].values) * (30/timespan)
+            timeRate = df[self.input_items].values * (30/timespan)
             output.append(round(timeRate[0][0], 2))
 
         df[self.output_items] = pd.DataFrame(output, index=df.index)
@@ -647,6 +649,7 @@ class deviceHealth(BaseTransformer):
             condition = True
         else:
             condition = False
+
         for x in keyValues:
             if (input.iloc[x] == None):
                 input.iloc[x] = True
