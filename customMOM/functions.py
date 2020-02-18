@@ -641,6 +641,7 @@ class deviceHealth(BaseTransformer):
         isOnlineFrame = df['isOnline']
         inputFrame = df[self.input_items]
         isOnlineFrame = isOnlineFrame.reset_index(drop=True)
+        inputFrame = inputFrame.reset_index(drop=True)
         output = []
         count = 0
 
