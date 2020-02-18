@@ -177,22 +177,28 @@ class firstOccurenceRelation(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        count = 0
-        row = []
         indexKey = df[self.input_items]
         input = df[self.input_items2]
         indexKey.reset_index(inplace=True, drop=True)
         input.reset_index(inplace=True, drop=True)
         indexKey = indexKey.drop_duplicates(keep="first")
         keyValues = indexKey.index.values
+        output = []
+        start = 0
+        count = 0
 
         for x in keyValues:
             if (input.iloc[x,0] == self.condition):
+                for _ in range(start,x):
+                    output.append(count)
                 count = count + 1
+                start = x
 
-        for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+        if (len(output) < len(df[self.input_items2])):
+            for _ in range(start, len(df[self.input_items2])):
+                output.append(count)
 
+        df[self.output_items] = pd.DataFrame(output, index = df.index)
         return df
 
     @classmethod
@@ -727,22 +733,14 @@ class highHealthCount(BaseTransformer):
         online = df['isOnline']
         lowBattery = df['batteryLevel']
         waterAlert = df['waterAlert']
-        lowBatteryCount = len(np.where(lowBattery == 2)[0])
-        onlineCount = len(np.where(online == True)[0])
-        waterCount = len(np.where(waterAlert == False)[0])
-        count = lowBatteryCount + onlineCount + waterCount
-        count2 = 0
         outputItem = []
 
         for i in range (len(df[self.input_items])):
-            lowBatteryCount2 = len(np.where(lowBattery[:i+1] == 2)[0])
-            onlineCount2 = len(np.where(online[:i+1] == True)[0])
-            waterCount2 = len(np.where(waterAlert[:i+1] == False)[0])
-            count2 = lowBatteryCount2 + onlineCount2 + waterCount2
-            outputItem.append(count2)
-
-        #for i, input_item in enumerate(self.input_items):
-            #df[self.output_items[i]] = count
+            lowBatteryCount = len(np.where(lowBattery[:i+1] == 2)[0])
+            onlineCount = len(np.where(online[:i+1] == True)[0])
+            waterCount = len(np.where(waterAlert[:i+1] == False)[0])
+            count = lowBatteryCount + onlineCount + waterCount
+            outputItem.append(count)
 
         df[self.output_items] = pd.DataFrame(outputItem, index=df.index)
         return df
