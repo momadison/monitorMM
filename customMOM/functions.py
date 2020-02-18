@@ -768,11 +768,12 @@ class offlineCount(BaseTransformer):
     def execute(self, df):
         df=df.copy()
         online = df['isOnline']
-        count = len(np.where(online == False)[0])
+        output = []
 
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+        for i in range(len(df[self.input_items])):
+            output.append(len(np.where(online[:i + 1] == False)[0]))
 
+        df[self.output_items] = pd.DataFrame(output, index = df.index)
         return df
 
     @classmethod
