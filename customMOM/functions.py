@@ -637,28 +637,28 @@ class deviceHealth(BaseTransformer):
 
     def execute(self, df):
         df = df.copy()
-        count = 0
-        indexKey = df[self.input_items]
-        input = df['isOnline']
-        indexKey.reset_index(inplace=True, drop=True)
-        input.reset_index(inplace=True, drop=True)
-        indexKey = indexKey.drop_duplicates(keep="last")
-        keyValues = indexKey.index.values
         condition = self.condition
+        output = []
+        count = 0
+
         if (condition > 0):
             condition = True
         else:
             condition = False
 
-        for x in keyValues:
-            if (input.iloc[x] == None):
-                input.iloc[x] = True
-            if (input.iloc[x] == condition):
-                count = count + 1
+        for i in range(len(df[self.input_items])):
+            onlineFrame = df['isOnline'][:i+1]
+            deviceFrame = df[self.input_items][:i+1]
+            deviceFrame = deviceFrame.drop_duplicates(keep="last")
+            deviceKeys = deviceFrame.index.values
 
-        for i, inputItem in enumerate(self.input_items):
-            df[self.output_items[i]] = count
+            for key in deviceKeys:
+                if (onlineFrame.iloc[key] == condition):
+                    count = count + 1
+            output.append(count)
+            count = 0
 
+        df[self.output_items] = pd.DataFrame(output, index = df.index)
         return df
 
     @classmethod
