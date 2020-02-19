@@ -462,64 +462,66 @@ class HazardLifeCycle(BaseTransformer):
         sources_not_in_column = df.index.names
         df.reset_index(inplace=True)
         df = df.copy()
-        count = 0
-        lifeCycle = []
+        output = []
         waterAlert = df['waterAlert']
         lowBattery = df['batteryLevel']
         online = df['isOnline']
         deviceId = df[self.input_items]
         timeSeries = df['RCV_TIMESTAMP_UTC']
-        waterHazardArr = np.where(waterAlert == True)[0]
-        lowBatteryArr = np.where(lowBattery == 0)[0]
-        offlineArr = np.where(online == False)[0]
 
-        for alert in waterHazardArr:
-            trueTimeStamp = timeSeries[alert]
-            falseTimeStamp = dt.datetime.utcnow()
-            deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
-            for match in deviceMatchArr:
-                if waterAlert[match] == False:
-                    falseTimeStamp = timeSeries[match]
-                    break
-            lifeCycleTime = falseTimeStamp - trueTimeStamp
-            lifeCycle.append(lifeCycleTime)
+        for i in range(len(waterAlert)):
+            waterHazardArr = np.where(waterAlert[:i+1] == True)[0]
+            lowBatteryArr = np.where(lowBattery[:i+1] == 0)[0]
+            offlineArr = np.where(online[:i+1] == False)[0]
+            life_cycle = []
 
-        for alert in lowBatteryArr:
-            trueTimeStamp = timeSeries[alert]
-            falseTimeStamp = dt.datetime.utcnow()
-            deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
-            for match in deviceMatchArr:
-                if lowBattery[match] > 0:
-                    falseTimeStamp = timeSeries[match]
-                    break
-            lifeCycleTime = falseTimeStamp - trueTimeStamp
-            lifeCycle.append(lifeCycleTime)
+            for key in waterHazardArr:
+                trueTime = timeSeries[key]
+                falseTime = dt.datetime.utcnow()
+                deviceMatch = np.where(deviceId == deviceId.iloc[key][0])
+                deviceMatch = [i for i in deviceMatch[0] if i > key]
+                for match in deviceMatch:
+                    if waterAlert[match] == False:
+                        falseTime = timeSeries[match]
+                        break
+                resolveTime = falseTime - trueTime
+                life_cycle.append(resolveTime)
 
-        for alert in offlineArr:
-            trueTimeStamp = timeSeries[alert]
-            falseTimeStamp = dt.datetime.utcnow()
-            deviceMatchArr = np.where(deviceId == deviceId.iloc[alert][0])
-            deviceMatchArr = [i for i in deviceMatchArr[0] if i > alert]
-            for match in deviceMatchArr:
-                if online[match] == True:
-                    falseTimeStamp = timeSeries[match]
-                    break
-            lifeCycleTime = falseTimeStamp - trueTimeStamp
-            lifeCycle.append(lifeCycleTime)
+            for key in lowBatteryArr:
+                trueTime = timeSeries[key]
+                falseTime = dt.datetime.now()
+                deviceMatch = np.where(deviceId == deviceId.iloc[key][0])
+                deviceMatch = [i for i in deviceMatch[0] if i > key]
+                for match in deviceMatch:
+                    if lowBattery[match] > 0:
+                        falseTime = timeSeries[match]
+                        break
+                resolveTime = falseTime - trueTime
+                life_cycle.append(resolveTime)
 
-        if len(lifeCycle) == 0:
-            falseTimeStamp = dt.datetime.utcnow()
-            trueTimeStamp = dt.datetime.utcnow() - dt.timedelta(hours=1)
-            lifeCycleTime = falseTimeStamp - trueTimeStamp
-            lifeCycle.append(lifeCycleTime)
+            for key in offlineArr:
+                trueTime = timeSeries[key]
+                falseTime = dt.datetime.now()
+                deviceMatch = np.where(deviceId == deviceId.iloc[key][0])
+                deviceMatch = [i for i in deviceMatch[0] if i > key]
+                for match in deviceMatch:
+                    if online[match] == True:
+                        falseTime = timeSeries[match]
+                        break
+                resolveTime = falseTime - trueTime
+                life_cycle.append(resolveTime)
 
-        averageLifeCycle = sum(lifeCycle, dt.timedelta(0)) / len(lifeCycle)
-        result = (averageLifeCycle.days *24) + (averageLifeCycle.seconds//3600)
-        for i, input_item in enumerate(self.input_items):
-            df[self.output_items[i]] = result
+            if len(life_cycle) == 0:
+                falseTime = dt.datetime.utcnow()
+                trueTime = dt.datetime.utcnow() - dt.timedelta(hours=1)
+                resolveTime = falseTime - trueTime
+                life_cycle.append(resolveTime)
 
+            averageLifeCycle = sum(life_cycle, dt.timedelta(0)) / len(life_cycle)
+            result = (averageLifeCycle.days * 24) + (averageLifeCycle.seconds // 3600)
+            output.append(result)
+
+        df[self.output_items] = pd.DataFrame(output, index= df.index)
         df.set_index(keys=sources_not_in_column, inplace=True)
         return df
 
